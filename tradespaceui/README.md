@@ -1,5 +1,18 @@
 # tradespaceui
 
+## Usefull links:
+### General vue:
+```
+https://vuejs.org/
+```
+### Vuetify:
+```
+https://vuetifyjs.com/en/introduction/why-vuetify
+```
+### BootstrapVue:
+```
+https://bootstrap-vue.js.org/docs/components/
+```
 ## Project setup
 ```
 npm install
@@ -19,11 +32,3 @@ npm run build
 ```
 npm run test
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
