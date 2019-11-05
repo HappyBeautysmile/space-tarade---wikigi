@@ -1,7 +1,12 @@
 # tradespace_ui
 
 ## Links:
-
+### Vue
+https://vuejs.org/
+### Vuetify
+https://vuetifyjs.com/en/components/api-explorer
+### Bootstrap Vue
+https://bootstrap-vue.js.org/docs/components/
 
 ## Project setup and first command to run!
 ```
