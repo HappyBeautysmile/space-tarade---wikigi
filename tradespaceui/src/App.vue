@@ -7,13 +7,11 @@
                 <span class="font-weight-light">Space</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn
-                    text
-                    href="https://github.com/vuetifyjs/vuetify/releases/latest"
-                    target="_blank"
-            >
-                <span class="mr-2">For trade</span>
-            </v-btn>
+            <router-link to="/about">
+                <v-btn text>
+                    <span class="mr-2">For trade</span>
+                </v-btn>
+            </router-link>
         </v-app-bar>
         <v-content style="margin: 0; padding: 0">
 <!--            <HelloWorld/>-->

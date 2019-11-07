@@ -1,7 +1,29 @@
 <template>
     <div class="about">
-        <h1>This is an about page</h1><img style="padding: 0; margin: 0" :src="require('@/assets/logo3.png')"
-                                           height="240" width="250"/>
-
+        <b-row style="padding: 80px 40px 0 40px">
+            <li v-for="item in items" v-bind:key="item" style="list-style-type:none;">
+                <Item :item="item"></Item>
+            </li>
+        </b-row>
     </div>
 </template>
+
+<script>
+    import Item from '../components/item';
+
+    export default {
+        name: 'About',
+        components: {
+            Item,
+        },
+        data: () => ({
+            items: [
+                'foo', 'bar', 'bork', 'dog', 'shoe', 'catch', 'p1', 'p2'
+            ]
+        }),
+    };
+</script>
+
+<style scoped>
+
+</style>
