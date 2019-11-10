@@ -20,7 +20,7 @@
                       significantly lower than purchase value. Or you might even have items like furniture that you
                       don't know what to do with when you move. Why deal with this hassle when you can just trade your
                       unwanted items to other people for mutual benefit?
-                    </span>
+          </span>
         </div>
       </b-col>
       <!--            <b-col col="1"></b-col>-->
