@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import Item from '../components/item';
+    import Item from '../components/accountPage';
 
     export default {
         name: 'Account',
@@ -18,7 +18,7 @@
         },
         data: () => ({
             items: [
-                'foo', 'bar'
+                'foo'
             ]
         }),
     };
