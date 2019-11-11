@@ -23,6 +23,11 @@ const routes = [
     path: "/item/12345uniqueID",
     name: "item/12345uniqueID",
     component: () => import("../views/ItemView.vue")
+  },
+  {
+    path: "/account",
+    name: "account",
+    component: () => import("../views/Account.vue")
   }
 ];
 

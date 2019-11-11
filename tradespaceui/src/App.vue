@@ -12,6 +12,11 @@
                     <span class="mr-2">For trade</span>
                 </v-btn>
             </router-link>
+            <router-link to="/account">
+                <v-btn text>
+                    <span class="mr-2">Account</span>
+                </v-btn>
+            </router-link>
         </v-app-bar>
         <v-content style="margin: 0; padding: 0">
 <!--            <HelloWorld/>-->
