@@ -13,7 +13,10 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title class="headline"> {{itemTitle}} </v-list-item-title>
+                            <router-link :to="name">
                             <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
+                            </router-link>
+                            <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
 
