@@ -1,46 +1,37 @@
 <template>
-
-    <div id="container">
-        <v-card
-        class="mx-auto"
-        max-width="344"
-        hover="true"
-        >
-                <div>
-                <div class="flex-no-wrap justify-space-between">
+    
+    <b-container fluid style="padding: 80px 40px 0 40px">
+        <b-card class="overflow-hidden">
+            <b-row>
+                <b-col >
+                    <b-card-img :src='itemImage' class="rounded-0"></b-card-img>
+                </b-col>
+                <b-col>
                     <v-list-item>
-                    <v-list-item-avatar color="grey">
-                        <v-img :src='avatar'></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title class="headline">{{ itemTitle }}</v-list-item-title>
-                        <router-link to="/nikita">
-                        <v-list-item-subtitle>by {{ name }} </v-list-item-subtitle>
-                        </router-link>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-list-item-subtitle>{{ location }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
+                        <v-list-item-avatar color="grey">
+                            <v-img :src="avatar"></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title class="headline"> {{itemTitle}} </v-list-item-title>
+                            <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
 
-                <v-img
-                        :src='itemImage'
-                        height="200px"
-                ></v-img>
+                    <b-card-body title="">
+                        <b-card-text>
+                            {{description}}
+                        </b-card-text>
+                    </b-card-body>
 
-                </div>
+                    <div style="padding: 10px">
+                        <v-btn large> Start Trade</v-btn>
+                        <v-btn large style="margin-left: 30px"> Hide </v-btn>
+                    </div>
+                </b-col>
+            </b-row>
+        </b-card>
 
-                    <v-card-subtitle style="display: block">
-                        <p id="text"> {{ description }} </p>
-
-                        <v-btn large class="item_action"> Start Trade</v-btn>
-                        <v-btn large class="item_action"> Hide</v-btn>
-                    </v-card-subtitle>
-                </div>
-        </v-card>
-        </div>
+    </b-container>
 </template>
 
 <script>
