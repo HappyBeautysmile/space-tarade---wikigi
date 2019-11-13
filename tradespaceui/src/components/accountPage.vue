@@ -60,7 +60,7 @@
             show: false,
             name: "BOBOBO"
         }),
-        
+
     };
 </script>
 

@@ -17,6 +17,11 @@
                     <span class="mr-2">Account</span>
                 </v-btn>
             </router-link>
+            <router-link to="/createItem">
+                <v-btn text>
+                    <span class="mr-2">Start Trade</span>
+                </v-btn>
+            </router-link>
         </v-app-bar>
         <v-content style="margin: 0; padding: 0">
 <!--            <HelloWorld/>-->
