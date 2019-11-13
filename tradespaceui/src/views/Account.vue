@@ -1,7 +1,7 @@
 <template>
   <b-list-group style="padding: 80px 40px 0 40px">
-    <div>
-      <v-list-item-avatar color="grey">
+    <div style="text-align:center">
+      <v-list-item-avatar color="grey" size="200px">
         <v-img :src="currentUser.avatarSrc"></v-img>
       </v-list-item-avatar>
       <router-link :to="currentUser.profileName" class="noHyperlink">
@@ -36,7 +36,7 @@ export default {
       { name: "Your Clothings", dest: "history" }
     ],
     currentUser: {
-      profileName: "nikita",
+      profileName: "nikita123",
       avatarSrc:
         "https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-9/22449875_913694855449733_82882405759448142_n.jpg?_nc_cat=101&_nc_oc=AQncaWWuWzFfxdVtK5P69Jl-sJRqNOoHsimpBnysDiZ4IU6CrUGl_iMle5gtvd83ylHYe0ve-pmotMRHVvP7ufkn&_nc_ht=scontent-lax3-1.xx&oh=8a7bc0b583f64c997324885cbafb92a0&oe=5E627D59",
       location: "Los Angeles, CA"
