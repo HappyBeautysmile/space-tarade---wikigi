@@ -64,6 +64,6 @@ typings/
 
 tradespace_backend/.env
 tradespace_backend/instance/*
-! tradespace_backend/instance/readme.md
+!tradespace_backend/instance/readme.md
 __pycache__/
 
