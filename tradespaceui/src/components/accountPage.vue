@@ -57,7 +57,6 @@
         name: 'Item',
         props: ['item'],
         data: () => ({
-            show: false,
             name: "BOBOBO"
         }),
 
