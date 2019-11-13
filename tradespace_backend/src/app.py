@@ -1,5 +1,4 @@
 from flask import Flask
-from account_api import account_api
 from UsersAPI import users_api
 from LoginAPI import login_api
 from ItemsAPI import items_api

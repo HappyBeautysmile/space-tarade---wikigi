@@ -47,7 +47,10 @@ def get_user(user_id):
 
 This is similar across the different top-level routes. For more info on how to define different kinds of requests and how to do cool stuff like using part of the URL (`<user_id>`) as a param, I would just look up some flask examples or docs.
 
+# Authentication
+* Initial investigation suggests `flask-httpauth` is a good package to use (will need to be pip installed)
+* Can use the **Token Authentication Scheme** from this article: https://flask-httpauth.readthedocs.io/en/latest/
+
 # Adding tests
 Haven't looked into this too much yet. Here is a doc I found that might come in handy:
 * https://flask.palletsprojects.com/en/1.1.x/testing/
-
