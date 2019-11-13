@@ -1,0 +1,1 @@
+this folder is meant to store files we don't want to expose on github (keys, passwords, etc)

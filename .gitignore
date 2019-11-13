@@ -59,3 +59,11 @@ typings/
 
 # next.js build output
 .next
+
+# BACKEND IGNORES
+
+tradespace_backend/.env
+tradespace_backend/instance/*
+!tradespace_backend/instance/readme.md
+__pycache__/
+
