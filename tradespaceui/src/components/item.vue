@@ -1,4 +1,5 @@
 <template>
+    <router-link to="/item/12345uniqueID">
     <div id="myitem">
         <v-card
                 class="mx-auto"
@@ -29,6 +30,7 @@
             </v-card-subtitle>
         </v-card>
     </div>
+    </router-link>
 </template>
 
 <script>
