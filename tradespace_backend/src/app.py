@@ -3,7 +3,6 @@ from UsersAPI import users_api
 from LoginAPI import login_api
 from ItemsAPI import items_api
 from SearchAPI import search_api
-from FirebaseConfig import firebase_config
 import firebase_admin
 from firebase_admin import credentials
 
