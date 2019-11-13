@@ -20,46 +20,14 @@
                     height="200px"
             ></v-img>
 
-<!--            <v-card-title>-->
-<!--                Top western road trips-->
-<!--            </v-card-title>-->
-
             <v-card-subtitle style="display: block">
-                <p id="text">Good shoes almost new..Adidas AG is a multinational corporation, founded and headquartered in Herzogenaurach, Germany, that designs and manufactures shoes, clothing and accessories. It is the largest sportswear manufacturer in Europe, and the second largest in the world, after Nike..</p>
+                <p id="text">Good shoes almost new..Adidas AG is a multinational corporation, founded and headquartered
+                    in Herzogenaurach, Germany, that designs and manufactures shoes, clothing and accessories. It is the
+                    largest sportswear manufacturer in Europe, and the second largest in the world, after Nike..</p>
                 <v-btn text icon color="indigo" style="margin: 0; padding: 0; display: inline-block;">
                     <v-icon>mdi-call-split</v-icon>
                 </v-btn>
             </v-card-subtitle>
-
-<!--            <v-card-actions>-->
-<!--&lt;!&ndash;                <v-btn text>Share</v-btn>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                <v-btn&ndash;&gt;-->
-<!--&lt;!&ndash;                        color="purple"&ndash;&gt;-->
-<!--&lt;!&ndash;                        text&ndash;&gt;-->
-<!--&lt;!&ndash;                >&ndash;&gt;-->
-<!--&lt;!&ndash;                    Explore&ndash;&gt;-->
-<!--&lt;!&ndash;                </v-btn>&ndash;&gt;-->
-
-<!--                <v-spacer></v-spacer>-->
-
-<!--                <v-btn-->
-<!--                        icon-->
-<!--                        @click="show = !show"-->
-<!--                >-->
-<!--                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>-->
-<!--                </v-btn>-->
-<!--            </v-card-actions>-->
-
-<!--            <v-expand-transition>-->
-<!--                <div v-show="show" style="position: fixed; background: azure">-->
-<!--                    <v-divider></v-divider>-->
-
-<!--                    <v-card-text>-->
-<!--                        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.-->
-<!--                    </v-card-text>-->
-<!--                </div>-->
-<!--            </v-expand-transition>-->
         </v-card>
     </div>
     </router-link>
@@ -77,16 +45,12 @@
 </script>
 
 <style scoped>
-    #myitem{
+    #myitem {
         margin: 5px;
         display: inline-block;
-        /*width: 350px;*/
-        /*height: 350px;*/
-        /*border-radius: 3px;*/
-        /*border: 1px black solid;*/
     }
 
-    #text{
+    #text {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

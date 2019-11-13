@@ -7,7 +7,7 @@
                 <span class="font-weight-light">Space</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <router-link to="/about">
+            <router-link to="/search">
                 <v-btn text>
                     <span class="mr-2">For trade</span>
                 </v-btn>
@@ -15,6 +15,11 @@
             <router-link to="/account">
                 <v-btn text>
                     <span class="mr-2">Account</span>
+                </v-btn>
+            </router-link>
+            <router-link to="/createItem">
+                <v-btn text>
+                    <span class="mr-2">Start Trade</span>
                 </v-btn>
             </router-link>
         </v-app-bar>

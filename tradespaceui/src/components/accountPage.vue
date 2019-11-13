@@ -2,7 +2,7 @@
 
     <b-container class="myAccount">
     <b-row>
-        <b-col>
+        <b-col col="2">
             <v-card class="mx-auto" max-width="500" hover="true">
             <v-list-item>
                 <v-list-item-content>
@@ -15,7 +15,7 @@
             ></v-img>
 
             <v-card-subtitle style="display: block">
-                <p id="text">Hi my name is Nikita and I love to trade shoes!</p>
+                <p id="text">Hi my name is {{name}} and I love to trade shoes!</p>
                 <v-btn text icon color="indigo" style="margin: 0; padding: 0; display: inline-block;">
                     <v-icon>mdi-call-split</v-icon>
                 </v-btn>
@@ -58,7 +58,9 @@
         props: ['item'],
         data: () => ({
             show: false,
+            name: "BOBOBO"
         }),
+
     };
 </script>
 
