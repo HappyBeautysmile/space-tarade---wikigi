@@ -21,7 +21,7 @@
             </router-link>
             <router-link to="/createItem">
                 <v-btn text>
-                    <span class="mr-2">Start Trade</span>
+                    <span class="mr-2">ADD ITEM FOR TRADE</span>
                 </v-btn>
             </router-link>
         </v-app-bar>

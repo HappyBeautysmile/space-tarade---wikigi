@@ -5,7 +5,7 @@
                 <form method="get" action="">
                     <div class="tb">
                         <div class="td">
-                            <input type="text" placeholder="Search" required>
+                            <input type="text" placeholder="Search" required name="search" @input="changed">
                         </div>
                         <div class="td" id="s-cover">
                             <button type="submit">
@@ -60,6 +60,11 @@
         data: () => ({
             show: true,
         }),
+        methods: {
+            changed: function(event) {
+                this.$store.commit('change', event.target.value)
+            }
+        }
     }
 </script>
 
