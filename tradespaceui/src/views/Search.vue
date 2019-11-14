@@ -1,11 +1,11 @@
 <template>
     <div>
-        <b-row style="text-align: center; margin: 100px 50px 0 50px">
+        <b-row style="text-align: center; margin: 180px 50px 0 50px">
             <div id="cover">
                 <form method="get" action="">
                     <div class="tb">
                         <div class="td">
-                            <input type="text" placeholder="Search" required>
+                            <input type="text" placeholder="Search" required name="search" @input="changed">
                         </div>
                         <div class="td" id="s-cover">
                             <button type="submit">
@@ -14,40 +14,82 @@
                             </button>
                         </div>
                     </div>
+                    <h1 style="margin: 60px">For example:</h1>
                 </form>
             </div>
+        </b-row>
+        <b-row style="text-align: center; margin: 100px 50px 0 50px">
+            <b-container fluid class="p-4 bg-dark">
+                <b-row>
+                    <b-col>
+                        <router-link to="/about">
+
+                            <h3 style="color: white">Shoes</h3>
+                            <b-img thumbnail fluid
+                                   src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-running-shoes-lead-02-1567016766.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*"
+                                   alt="Image 1"></b-img>
+                        </router-link>
+                    </b-col>
+                    <b-col>
+                        <router-link to="/about">
+
+                            <h3 style="color: white">Shoes</h3>
+                            <b-img thumbnail fluid
+                                   src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-running-shoes-lead-02-1567016766.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*"
+                                   alt="Image 1"></b-img>
+                        </router-link>
+                    </b-col>
+                    <b-col>
+                        <router-link to="/about">
+
+                            <h3 style="color: white">Shoes</h3>
+                            <b-img thumbnail fluid
+                                   src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-running-shoes-lead-02-1567016766.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*"
+                                   alt="Image 1"></b-img>
+                        </router-link>
+                    </b-col>
+                </b-row>
+            </b-container>
         </b-row>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Search"
+        name: "Search",
+        data: () => ({
+            show: true,
+        }),
+        methods: {
+            changed: function(event) {
+                this.$store.commit('change', event.target.value)
+            }
+        }
     }
 </script>
 
 <style scoped>
+    .my_card {
+        /*width: 1000px;*/
+        height: 200px;
+    }
 
-    body
-    {
+    body {
         margin: 0;
         background-color: #ffd8d8;
     }
 
-    .tb
-    {
+    .tb {
         display: table;
         width: 100%;
     }
 
-    .td
-    {
+    .td {
         display: table-cell;
         vertical-align: middle;
     }
 
-    input, button
-    {
+    input, button {
         color: #fff;
         font-family: Nunito;
         padding: 0;
@@ -56,10 +98,8 @@
         background-color: transparent;
     }
 
-    #cover
-    {
+    #cover {
         position: absolute;
-        top: 50%;
         left: 0;
         right: 0;
         width: 100%;
@@ -71,32 +111,27 @@
         transform: scale(0.6);
     }
 
-    form
-    {
+    form {
         height: 96px;
     }
 
-    input[type="text"]
-    {
+    input[type="text"] {
         width: 100%;
         height: 96px;
         font-size: 60px;
         line-height: 1;
     }
 
-    input[type="text"]::placeholder
-    {
+    input[type="text"]::placeholder {
         color: #000000;
     }
 
-    #s-cover
-    {
+    #s-cover {
         width: 1px;
         padding-left: 35px;
     }
 
-    button
-    {
+    button {
         position: relative;
         display: block;
         width: 84px;
@@ -104,8 +139,7 @@
         cursor: pointer;
     }
 
-    #s-circle
-    {
+    #s-circle {
         position: relative;
         top: -8px;
         left: 0;
@@ -119,8 +153,7 @@
         transition: 0.5s ease all;
     }
 
-    button span
-    {
+    button span {
         position: absolute;
         top: 68px;
         left: 43px;
@@ -133,8 +166,7 @@
         transition: 0.5s ease all;
     }
 
-    button span:before, button span:after
-    {
+    button span:before, button span:after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -147,8 +179,7 @@
         transition: 0.5s ease all;
     }
 
-    #s-cover:hover #s-circle
-    {
+    #s-cover:hover #s-circle {
         top: -1px;
         width: 67px;
         height: 15px;
@@ -157,8 +188,7 @@
         border-radius: 20px;
     }
 
-    #s-cover:hover span
-    {
+    #s-cover:hover span {
         top: 50%;
         left: 56px;
         width: 25px;
@@ -166,19 +196,17 @@
         transform: rotateZ(0);
     }
 
-    #s-cover:hover button span:before
-    {
+    #s-cover:hover button span:before {
         bottom: 11px;
         transform: rotateZ(52deg);
     }
 
-    #s-cover:hover button span:after
-    {
+    #s-cover:hover button span:after {
         bottom: -11px;
         transform: rotateZ(-52deg);
     }
-    #s-cover:hover button span:before, #s-cover:hover button span:after
-    {
+
+    #s-cover:hover button span:before, #s-cover:hover button span:after {
         right: -6px;
         width: 40px;
         background-color: #fff;

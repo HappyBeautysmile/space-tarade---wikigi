@@ -3,6 +3,11 @@ from UsersAPI import users_api
 from LoginAPI import login_api
 from ItemsAPI import items_api
 from SearchAPI import search_api
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("../instance/tradespace_firebase_admin_key.json")
+firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
 app.register_blueprint(users_api,  url_prefix='/users')

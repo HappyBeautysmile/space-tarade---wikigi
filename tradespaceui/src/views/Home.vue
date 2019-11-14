@@ -76,6 +76,10 @@
                                     </v-row>
                                 </v-container>
                                 <small>*indicates required field</small>
+                              <small>Have an account already, sign in:
+                                <v-btn color="blue darken-1" text @click="dialog2 = false, dialog1 = true">Sign In
+                                </v-btn>
+                              </small>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
