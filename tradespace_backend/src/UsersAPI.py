@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 from TokenAuthentication import auth
 import firebase_admin
 from firebase_admin import auth as firebase_auth
@@ -9,11 +9,17 @@ users_api = Blueprint('users_api', __name__)
 def hello():
   return 'Users: Hello World!'
 
-@users_api.route('<user_id>', methods=['GET'])
+@users_api.route('/<string:user_id>', methods=['GET'])
+@auth.login_required
 def get_user(user_id):
-  return "USER WITH ID {}".format(user_id)
+  try:
+    user = firebase_auth.get_user(user_id)
+    user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number)
+    return user_data
+  except firebase_auth_utils.UserNotFoundError:
+    return {'error': 'user id not found'}, 400
 
-@users_api.route('/create_user', methods=['POST'])
+@users_api.route('/', methods=['POST'])
 def create_user():
   try:
     email = request.form['email']
