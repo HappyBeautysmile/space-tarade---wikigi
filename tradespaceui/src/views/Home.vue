@@ -100,7 +100,6 @@
         data: () => ({
             name: "",
             first: "",
-            last: "",
             email: "",
             password: "",
             dialog1: false,
