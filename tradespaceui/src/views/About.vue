@@ -1,7 +1,7 @@
 <template>
     <div class="about">
-        <b-row style="padding: 80px 40px 0 40px">
-            <h1>Search for: {{$store.getters.search}}</h1>
+        <h1 style="margin: 80px 0 0 0; padding: 0">Search for: {{$store.getters.search}}</h1>
+        <b-row style="padding: 20px 40px 0 40px">
             <li v-for="item in items" v-bind:key="item" style="list-style-type:none;">
                 <Item :item="item"></Item>
             </li>
