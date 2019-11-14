@@ -31,7 +31,7 @@ export default {
   data: () => ({
     settings: [
       { name: "Email", dest: "email" },
-      { name: "Privacy Policy", dest: "privacy" },
+      //{ name: "Privacy Policy", dest: "privacy" },
       { name: "Payment Options", dest: "payment" },
       { name: "Your Clothings", dest: "history" }
     ],
