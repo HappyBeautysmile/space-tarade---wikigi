@@ -45,7 +45,6 @@
         </v-card>
         </b-col>
 
-        <b-col>THIRD COLUMN</b-col>
     </b-row>
     </b-container>
 

@@ -52,9 +52,13 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" sm="8" md="5">
+                                        <v-col cols="12" sm="8" md="6">
                                             <v-text-field label="Full Name*" required
                                                           v-model="first"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="8" md="6">
+                                            <v-text-field label="Phone Number*" required
+                                                          v-model="phone"></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
                                             <v-text-field label="Email*" required v-model="email"></v-text-field>
@@ -101,6 +105,7 @@
             name: "",
             first: "",
             email: "",
+            phone: "",
             password: "",
             dialog1: false,
             dialog2: false,
