@@ -14,13 +14,21 @@
     </div>
 
     <b-form-input
-      v-model="location"
-      label="Location"
-      placeholder="Location"
+      v-model="itemTitle"
+      label="Item Title"
+      placeholder="Item Title (e.g. Adidas shoes and a green dress)"
       required
     ></b-form-input>
 
-    <div style="padding-top: 10px">
+    <b-form-input
+      v-model="location"
+      label="Location"
+      placeholder="Location"
+      style="margin-top: 10px"
+      required
+    ></b-form-input>
+
+    <div style="margin-top: 10px">
       <b-form-input
         v-model="newTag"
         v-on:keyup.enter.native="addTag"
@@ -63,6 +71,7 @@ export default {
   data: () => ({
     location: "",
     name: "Nikita",
+    itemTitle: "",
     tags: [],
     itemImage: null,
     newTag: "",
