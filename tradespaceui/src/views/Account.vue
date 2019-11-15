@@ -12,7 +12,7 @@
       <v-list-item-subtitle>{{ currentUser.location }}</v-list-item-subtitle>
     </div>
     <router-link
-      :to="`/${currentUser.profileName}/${setting.dest}`"
+      :to="`/${setting.dest}`"
       class="noHyperlink"
       v-for="setting in settings"
       v-bind:key="setting.name"
