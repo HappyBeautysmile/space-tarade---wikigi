@@ -1,0 +1,1 @@
+This contains the tests for the frontend starting from the homepage. The test scripts simulate certain actions of how an average user interacts with the website. Failure is indicated in Cypress by a TIMEOUT, whereas Success is indicated by the completion of the test script.
