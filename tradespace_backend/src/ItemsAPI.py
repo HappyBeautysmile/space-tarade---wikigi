@@ -1,7 +1,7 @@
 from flask import Blueprint, request, g
-from TokenAuthentication import auth
+from src.TokenAuthentication import auth
 from firebase_admin import firestore
-from models.Item import Item
+from src.models.Item import Item
 
 items_api = Blueprint('items_api', __name__)
 ITEMS_COLLECTION = 'items'

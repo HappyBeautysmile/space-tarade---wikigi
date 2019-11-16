@@ -1,13 +1,14 @@
 from flask import Flask, g
 from flask_httpauth import HTTPTokenAuth
-from UsersAPI import users_api
-from ItemsAPI import items_api
-from SearchAPI import search_api
+from src.UsersAPI import users_api
+from src.ItemsAPI import items_api
+from src.SearchAPI import search_api
 import firebase_admin
 from firebase_admin import credentials
-from TokenAuthentication import auth
+from src.TokenAuthentication import auth
 
-cred = credentials.Certificate("../instance/tradespace_firebase_admin_key.json")
+# ENTER YOUR FULL LOCAL PATH to the json file here ("/Users/.../tradespace_firebase_admin_key.json") & DON'T COMMIT THE NEXT LINE
+cred = credentials.Certificate("FULL/PATH/TO/tradespace_firebase_admin_key.json")
 firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
