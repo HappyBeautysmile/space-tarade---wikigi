@@ -24,4 +24,3 @@ def test_success_2(client):
   """Checking the create user route."""
   rv = client.post('/users', data=dict(email='test12345@gmail.com', password='test12345', display_name='test12345', phone_number='+12222222222'), follow_redirects=True)
   assert b'User Created' in rv.data
-
