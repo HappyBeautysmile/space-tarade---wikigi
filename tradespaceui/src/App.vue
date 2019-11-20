@@ -24,6 +24,9 @@
                     <span class="mr-2">ADD ITEM FOR TRADE</span>
                 </v-btn>
             </router-link>
+            <v-btn text @click="logout">
+                <span class="mr-2">Log Out</span>
+            </v-btn>
         </v-app-bar>
         <v-content style="margin: 0; padding: 0">
             <!--            <HelloWorld/>-->
@@ -33,15 +36,18 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld';
-
+import firebase from 'firebase';
 export default {
   name: "App",
-  // components: {
-  //     HelloWorld,
-  // },
   data: () => ({
     //
-  })
+  }),
+    methods:{
+      logout: function () {
+          firebase.auth().signOut().then(()=>{
+              this.$router.replace('')
+          })
+      }
+    }
 };
 </script>

@@ -137,6 +137,7 @@
                         self.dialog2 = false;
                         self.snackbar = true;
                         self.text = 'Your account have been created';
+                        this.$router.replace('search');
                     },
                     function(error) {
                         // Handle Errors here.
@@ -156,6 +157,7 @@
                         self.dialog1 = false;
                         self.snackbar = true;
                         self.text = 'Welcome back!';
+                        this.$router.replace('search');
                     },
                     function(error) {
                         // Handle Errors here.
