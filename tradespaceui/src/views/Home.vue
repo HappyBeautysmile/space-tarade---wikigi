@@ -70,10 +70,10 @@
                                     </v-row>
                                 </v-container>
                                 <small>*indicates required field</small>
-                              <small>Have an account already, sign in:
-                                <v-btn color="blue darken-1" text @click="dialog2 = false, dialog1 = true">Sign In
-                                </v-btn>
-                              </small>
+                                <small>Have an account already, sign in:
+                                    <v-btn color="blue darken-1" text @click="dialog2 = false, dialog1 = true">Sign In
+                                    </v-btn>
+                                </small>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -129,23 +129,25 @@
             text: '',
             snackbar: false
         }),
-        methods:{
+        methods: {
             signUp: function () {
                 var self = this;
                 firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-                    function() {
+                    function () {
                         self.dialog2 = false;
                         self.snackbar = true;
                         self.text = 'Your account have been created';
-                        this.$router.replace('search');
+                        self.$router.replace('home');
+                        self.$store.commit('logIn', true);
+                        // this.$router.go(0);
                     },
-                    function(error) {
+                    function (error) {
                         // Handle Errors here.
                         let errorCode = error.code;
                         let errorMessage = error.message;
                         // alert("ERROR:" + errorMessage + errorCode);
                         self.snackbar = true;
-                        self.text = "ERROR "+errorCode+":" + errorMessage;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
                     }
                 );
 
@@ -153,19 +155,21 @@
             signIn: function () {
                 var self = this;
                 firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-                    function() {
+                    function () {
                         self.dialog1 = false;
                         self.snackbar = true;
                         self.text = 'Welcome back!';
-                        this.$router.replace('search');
+                        self.$router.replace('home');
+                        self.$store.commit('logIn', true)
+                        // self.$router.go(0);
                     },
-                    function(error) {
+                    function (error) {
                         // Handle Errors here.
                         let errorCode = error.code;
                         let errorMessage = error.message;
                         // alert("ERROR:" + errorMessage + errorCode);
                         self.snackbar = true;
-                        self.text = "ERROR "+errorCode+":" + errorMessage;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
                     }
                 );
 

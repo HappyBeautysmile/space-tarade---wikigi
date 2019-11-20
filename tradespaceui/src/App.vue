@@ -9,22 +9,22 @@
                 </router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <router-link to="/search">
+            <router-link to="/search" v-if="$store.getters.loggedIn">
                 <v-btn text>
                     <span class="mr-2">Search</span>
                 </v-btn>
             </router-link>
-            <router-link to="/account">
+            <router-link to="/account" v-if="$store.getters.loggedIn">
                 <v-btn text>
                     <span class="mr-2">Account</span>
                 </v-btn>
             </router-link>
-            <router-link to="/createItem">
+            <router-link to="/createItem" v-if="$store.getters.loggedIn">
                 <v-btn text>
                     <span class="mr-2">ADD ITEM FOR TRADE</span>
                 </v-btn>
             </router-link>
-            <v-btn text @click="logout">
+            <v-btn text @click="logout" v-if="$store.getters.loggedIn">
                 <span class="mr-2">Log Out</span>
             </v-btn>
         </v-app-bar>
@@ -45,7 +45,8 @@ export default {
     methods:{
       logout: function () {
           firebase.auth().signOut().then(()=>{
-              this.$router.replace('')
+              this.$router.replace('');
+              this.$store.commit('logOut');
           })
       }
     }
