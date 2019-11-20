@@ -8,7 +8,7 @@
                     <span>Trade</span>
                     <span class="font-weight-light">Space</span>
                 </div>
-                <div style="padding: 10px">
+                <div v-if="!$store.getters.loggedIn" style="padding: 10px">
                     <v-dialog v-model="dialog1" persistent max-width="600px">
                         <template v-slot:activator="{ on }">
                             <v-btn large style="margin-left: 30px" v-on="on">Sign In</v-btn>
@@ -114,7 +114,8 @@
 </template>
 
 <script>
-    import firebase from 'firebase'
+    import firebase from 'firebase';
+    import axios from 'axios';
 
     export default {
         data: () => ({
@@ -131,25 +132,32 @@
         }),
         methods: {
             signUp: function () {
-                var self = this;
-                firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-                    function () {
-                        self.dialog2 = false;
-                        self.snackbar = true;
-                        self.text = 'Your account have been created';
-                        self.$router.replace('home');
-                        self.$store.commit('logIn', true);
-                        // this.$router.go(0);
-                    },
-                    function (error) {
-                        // Handle Errors here.
-                        let errorCode = error.code;
-                        let errorMessage = error.message;
-                        // alert("ERROR:" + errorMessage + errorCode);
-                        self.snackbar = true;
-                        self.text = "ERROR " + errorCode + ":" + errorMessage;
-                    }
-                );
+                let self = this;
+                axios.post(`/users?name=` + self.name + '&email=' + self.email + '&password=' + self.password)
+                    .then(response => {
+                        alert(response);
+                    })
+                    .catch(e => {
+                        alert(e + e.status + e.code)
+                    });
+                // firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+                //     function () {
+                //         self.dialog2 = false;
+                //         self.snackbar = true;
+                //         self.text = 'Your account have been created';
+                //         self.$router.replace('home');
+                //         self.$store.commit('logIn', true);
+                //         // this.$router.go(0);
+                //     },
+                //     function (error) {
+                //         // Handle Errors here.
+                //         let errorCode = error.code;
+                //         let errorMessage = error.message;
+                //         // alert("ERROR:" + errorMessage + errorCode);
+                //         self.snackbar = true;
+                //         self.text = "ERROR " + errorCode + ":" + errorMessage;
+                //     }
+                // );
 
             },
             signIn: function () {
@@ -158,6 +166,11 @@
                     function () {
                         self.dialog1 = false;
                         self.snackbar = true;
+                        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+                            alert("Token: " + idToken)
+                        }).catch(function (error) {
+                            self.text = "ERROR:" + error;
+                        });
                         self.text = 'Welcome back!';
                         self.$router.replace('home');
                         self.$store.commit('logIn', true)

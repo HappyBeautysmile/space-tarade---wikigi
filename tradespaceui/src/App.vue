@@ -36,19 +36,21 @@
 </template>
 
 <script>
-import firebase from 'firebase';
-export default {
-  name: "App",
-  data: () => ({
-    //
-  }),
-    methods:{
-      logout: function () {
-          firebase.auth().signOut().then(()=>{
-              this.$router.replace('');
-              this.$store.commit('logOut');
-          })
-      }
-    }
-};
+    import firebase from 'firebase';
+
+    export default {
+        name: "App",
+        data: () => ({
+            //
+        }),
+        methods: {
+            logout: function () {
+                let self = this;
+                firebase.auth().signOut().then(() => {
+                    self.$store.commit('logIn', false);
+                    self.$router.replace('search');
+                })
+            }
+        }
+    };
 </script>

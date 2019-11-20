@@ -8,6 +8,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Vuex from 'vuex';
 import {store} from './store/store'
 import firebase from 'firebase';
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios);
 
 const firebaseConfig = {
     apiKey: "AIzaSyDXj-1A4-KiCMtxbqgkEh6uJnwdN2Bb-40",
@@ -27,6 +31,8 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
 let app = '';
+Vue.config.productionTip = false;
+axios.defaults.baseURL = 'http://localhost:5000';
 
 firebase.auth().onAuthStateChanged(()=>{
     if(!app){
