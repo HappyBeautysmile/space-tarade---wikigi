@@ -2,7 +2,7 @@
     <div style="margin: 0; padding: 0">
         <b-row style="margin: 60px 0 0 0; padding: 0">
             <!--            <b-col col="1"></b-col>-->
-            <b-col col="10" style="text-align: center; padding: 20px 20% 0 20%">
+            <b-col cols="12" style="text-align: center; padding: 20px 20% 0 20%">
                 <img style="padding: 0; margin: 0" :src="require('@/assets/logo3.png')" height="240" width="250"/>
                 <div style="font-size: 50px">
                     <span>Trade</span>
@@ -37,7 +37,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="dialog1 = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="dialog1 = false">Log In</v-btn>
+                                <v-btn color="blue darken-1" text @click="signIn">Log In</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -78,7 +78,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="dialog2 = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="dialog2 = false">Register</v-btn>
+                                <v-btn color="blue darken-1" text @click="signUp">Register</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -96,10 +96,26 @@
                 </div>
             </b-col>
         </b-row>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </div>
 </template>
 
 <script>
+    import firebase from 'firebase'
+
     export default {
         data: () => ({
             name: "",
@@ -109,6 +125,49 @@
             password: "",
             dialog1: false,
             dialog2: false,
+            text1: {},
+            text: '',
+            snackbar: false
         }),
+        methods:{
+            signUp: function () {
+                var self = this;
+                firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+                    function() {
+                        self.dialog2 = false;
+                        self.snackbar = true;
+                        self.text = 'Your account have been created';
+                    },
+                    function(error) {
+                        // Handle Errors here.
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        // alert("ERROR:" + errorMessage + errorCode);
+                        self.snackbar = true;
+                        self.text = "ERROR "+errorCode+":" + errorMessage;
+                    }
+                );
+
+            },
+            signIn: function () {
+                var self = this;
+                firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+                    function() {
+                        self.dialog1 = false;
+                        self.snackbar = true;
+                        self.text = 'Welcome back!';
+                    },
+                    function(error) {
+                        // Handle Errors here.
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        // alert("ERROR:" + errorMessage + errorCode);
+                        self.snackbar = true;
+                        self.text = "ERROR "+errorCode+":" + errorMessage;
+                    }
+                );
+
+            },
+        },
     };
 </script>
