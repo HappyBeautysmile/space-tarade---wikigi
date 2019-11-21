@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, g
 from src.TokenAuthentication import auth
 import firebase_admin
+import sys
 from firebase_admin import auth as firebase_auth
 from firebase_admin import _auth_utils as firebase_auth_utils
 users_api = Blueprint('users_api', __name__)
@@ -26,6 +27,8 @@ def get_user_with_id(user_id):
 @users_api.route('/', methods=['POST'])
 def create_user():
   try:
+    # jsonData = request.get_json()
+    # print(jsonData['email'])
     email = request.form['email']
     password = request.form['password']
     display_name = request.form['display_name']
@@ -39,4 +42,5 @@ def create_user():
   except firebase_auth_utils.UnexpectedResponseError:
     return {'error': 'unexpected response'}, 400
   except:
+    print("Unexpected error:", sys.exc_info()[0])
     return {'error': 'request error'}, 400
