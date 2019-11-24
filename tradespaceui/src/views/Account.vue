@@ -30,10 +30,11 @@ export default {
   components: {},
   data: () => ({
     settings: [
+      { name: "My Items", dest: "history" },
+      { name: "My Trades", dest: "history" },
       { name: "Account Settings", dest: "email" },
       //{ name: "Privacy Policy", dest: "privacy" },
-      { name: "Payment Options", dest: "payment" },
-      { name: "Your Clothings", dest: "history" }
+      { name: "Payment Options", dest: "payment" }
     ],
     currentUser: {
       profileName: "nikita123",

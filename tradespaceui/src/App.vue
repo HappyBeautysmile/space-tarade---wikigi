@@ -14,14 +14,14 @@
                     <span class="mr-2">Search</span>
                 </v-btn>
             </router-link>
-            <router-link to="/account" v-if="$store.getters.loggedIn">
-                <v-btn text>
-                    <span class="mr-2">Account</span>
-                </v-btn>
-            </router-link>
             <router-link to="/createItem" v-if="$store.getters.loggedIn">
                 <v-btn text>
                     <span class="mr-2">ADD ITEM FOR TRADE</span>
+                </v-btn>
+            </router-link>
+            <router-link to="/account" v-if="$store.getters.loggedIn">
+                <v-btn text>
+                    <span class="mr-2">Account</span>
                 </v-btn>
             </router-link>
             <v-btn text @click="logout" v-if="$store.getters.loggedIn">
