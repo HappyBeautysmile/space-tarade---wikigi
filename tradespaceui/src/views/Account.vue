@@ -32,9 +32,7 @@ export default {
     settings: [
       { name: "My Items", dest: "history" },
       { name: "My Trades", dest: "history" },
-      { name: "Account Settings", dest: "email" },
-      //{ name: "Privacy Policy", dest: "privacy" },
-      { name: "Payment Options", dest: "payment" }
+      { name: "Account Settings", dest: "email" }
     ],
     currentUser: {
       profileName: "nikita123",
