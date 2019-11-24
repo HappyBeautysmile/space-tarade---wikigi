@@ -54,7 +54,7 @@
                                     <v-row>
                                         <v-col cols="12" sm="8" md="6">
                                             <v-text-field label="Full Name*" required
-                                                          v-model="first"></v-text-field>
+                                                          v-model="name"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="8" md="6">
                                             <v-text-field label="Phone Number*" required
@@ -116,6 +116,7 @@
 <script>
     import firebase from 'firebase';
     import axios from 'axios';
+    import qs from 'querystring';
 
     export default {
         data: () => ({
@@ -133,12 +134,33 @@
         methods: {
             signUp: function () {
                 let self = this;
-                axios.post(`/users?name=` + self.name + '&email=' + self.email + '&password=' + self.password)
+                axios.post('/users/', qs.stringify({
+                    'email': self.email,
+                    'password': self.password,
+                    'display_name': self.name,
+                    'phone_number': self.phone
+                }), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
                     .then(response => {
                         alert(response);
+                        self.dialog2 = false;
+                        self.snackbar = true;
+                        self.text = 'Your account have been created';
+                        self.$router.replace('home');
+                        self.$store.commit('logIn', true);
+                        // this.$router.go(0);
                     })
-                    .catch(e => {
-                        alert(e + e.status + e.code)
+                    .catch(error => {
+                        // alert(e + e.status + e.code)
+                        // Handle Errors here.
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        // alert("ERROR:" + errorMessage + errorCode);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
                     });
                 // firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
                 //     function () {

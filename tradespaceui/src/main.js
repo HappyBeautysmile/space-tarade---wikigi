@@ -31,8 +31,9 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
 let app = '';
-Vue.config.productionTip = false;
+// Vue.config.productionTip = false;
 axios.defaults.baseURL = 'http://localhost:5000';
+
 
 firebase.auth().onAuthStateChanged(()=>{
     if(!app){
