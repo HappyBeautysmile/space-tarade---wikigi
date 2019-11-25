@@ -59,6 +59,7 @@
                                         <v-col cols="12" sm="8" md="6">
                                             <v-text-field label="Phone Number*" required
                                                           v-model="phone"></v-text-field>
+                                            <small>Add +1 to the number!</small>
                                         </v-col>
                                         <v-col cols="12">
                                             <v-text-field label="Email*" required v-model="email"></v-text-field>
@@ -145,42 +146,20 @@
                     }
                 })
                     .then(response => {
-                        alert(response);
+                        self.signIn();
+                        self.text1 = response;
                         self.dialog2 = false;
                         self.snackbar = true;
                         self.text = 'Your account have been created';
                         self.$router.replace('home');
                         self.$store.commit('logIn', true);
-                        // this.$router.go(0);
                     })
                     .catch(error => {
-                        // alert(e + e.status + e.code)
-                        // Handle Errors here.
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        // alert("ERROR:" + errorMessage + errorCode);
                         self.snackbar = true;
                         self.text = "ERROR " + errorCode + ":" + errorMessage;
                     });
-                // firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-                //     function () {
-                //         self.dialog2 = false;
-                //         self.snackbar = true;
-                //         self.text = 'Your account have been created';
-                //         self.$router.replace('home');
-                //         self.$store.commit('logIn', true);
-                //         // this.$router.go(0);
-                //     },
-                //     function (error) {
-                //         // Handle Errors here.
-                //         let errorCode = error.code;
-                //         let errorMessage = error.message;
-                //         // alert("ERROR:" + errorMessage + errorCode);
-                //         self.snackbar = true;
-                //         self.text = "ERROR " + errorCode + ":" + errorMessage;
-                //     }
-                // );
-
             },
             signIn: function () {
                 var self = this;
@@ -189,25 +168,21 @@
                         self.dialog1 = false;
                         self.snackbar = true;
                         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
-                            alert("Token: " + idToken)
+                            self.$store.commit('setToken', idToken)
                         }).catch(function (error) {
                             self.text = "ERROR:" + error;
                         });
                         self.text = 'Welcome back!';
                         self.$router.replace('home');
                         self.$store.commit('logIn', true)
-                        // self.$router.go(0);
                     },
                     function (error) {
-                        // Handle Errors here.
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        // alert("ERROR:" + errorMessage + errorCode);
                         self.snackbar = true;
                         self.text = "ERROR " + errorCode + ":" + errorMessage;
                     }
                 );
-
             },
         },
     };
