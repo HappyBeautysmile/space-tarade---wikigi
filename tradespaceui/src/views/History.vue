@@ -40,6 +40,7 @@ export default {
   {
     getUserItems: function () {
         //TODO: Get items from firebase
+        // Maybe do axios.get('/items/', qs.stringify({
 
 
         let self = this;
