@@ -5,9 +5,11 @@ cachetools==3.1.1
 certifi==2019.9.11
 chardet==3.0.4
 Click==7.0
+colorama==0.4.1
 firebase-admin==3.1.0
 Flask==1.1.1
 Flask-HTTPAuth==3.3.0
+fuzzywuzzy==0.17.0
 google-api-core==1.14.3
 google-api-python-client==1.7.11
 google-auth==1.7.0
