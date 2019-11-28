@@ -43,9 +43,22 @@ export default {
         }
     })
         .then(response => {
-            alert(response)
+            //alert(response)
             //TODO: RESPONSE DATA IS AN ARRAY, ITERATE THROUGH AND GET THE ITEMS IN THAT WAY.
+            let items = response.data;
+            //alert(items)
+            //alert(Object.values(items));
+            
+            self.items = Object.values(items);
+            
             //self.items = response.data;
+
+            // for(var key in items) {
+            //     var value = items[key];
+            //     alert(value);
+            // // do something with "key" and "value" variables
+            // }
+
 
             // let item = response.data;
             // self.location = item['location'];
