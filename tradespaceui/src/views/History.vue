@@ -43,18 +43,18 @@ export default {
         }
     })
         .then(response => {
-            // alert(response)
+            alert(response)
             //TODO: RESPONSE DATA IS AN ARRAY, ITERATE THROUGH AND GET THE ITEMS IN THAT WAY.
             //self.items = response.data;
 
-            let item = response.data;
-            self.location = item['location'];
-            self.itemTitle = item['title'];
-            self.tags = item['tags'];
-            self.owner_uid = item['owner_uid'];
-            self.photo_url = item['photo_url'];
-            self.description = item['description'];
-            self.itemImage = item['photo_url'];
+            // let item = response.data;
+            // self.location = item['location'];
+            // self.itemTitle = item['title'];
+            // self.tags = item['tags'];
+            // self.owner_uid = item['owner_uid'];
+            // self.photo_url = item['photo_url'];
+            // self.description = item['description'];
+            // self.itemImage = item['photo_url'];
         })
         .catch(error => {
             let errorCode = error.code;
