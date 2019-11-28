@@ -40,7 +40,7 @@ export default {
     settings: [
       { name: "My Items", dest: "history" },
       { name: "My Trades", dest: "history" },
-      { name: "Account Settings", dest: "email" }
+      { name: "Account Settings", dest: "update" }
     ],
     // display_name: "nikita123",
     // phone_number: "(555) 555-5555",

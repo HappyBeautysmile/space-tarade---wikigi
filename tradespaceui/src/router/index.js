@@ -63,12 +63,12 @@ const routes = [
   },
 
   {
-    path: "/email",
-    name: "email",
+    path: "/update",
+    name: "update",
     // meta: {
     //   requiresAuth: true
     // },
-    component: () => import("../views/Email.vue")
+    component: () => import("../views/Update.vue")
   },
 
   {

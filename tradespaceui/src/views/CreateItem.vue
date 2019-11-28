@@ -61,7 +61,9 @@
 
     <div style="padding: 10px">
       <v-btn large color="primary" @click="addItem"> Submit</v-btn>
-      <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
+      <router-link to="/account">
+        <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
+      </router-link>
     </div>
   </b-container>
 </template>
