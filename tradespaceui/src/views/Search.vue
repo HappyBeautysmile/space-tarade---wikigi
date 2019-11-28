@@ -5,10 +5,11 @@
                 <form method="get" action="">
                     <div class="tb">
                         <div class="td">
-                            <input type="text" placeholder="Search" required name="search" @input="changed">
+                            <input type="text" placeholder="Search" required name="search" @input="changed"
+                                   v-model="searchText">
                         </div>
                         <div class="td" id="s-cover">
-                            <button type="submit">
+                            <button type="submit" @click="search">
                                 <div id="s-circle"></div>
                                 <span></span>
                             </button>
@@ -55,14 +56,46 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    import qs from 'querystring';
+
     export default {
         name: "Search",
         data: () => ({
             show: true,
+            searchText: ""
         }),
         methods: {
-            changed: function(event) {
+            changed: function (event) {
                 this.$store.commit('change', event.target.value)
+            },
+            search: function () {
+                let self = this;
+                axios.post('/users/', qs.stringify({
+                    'email': self.email,
+                    'password': self.password,
+                    'display_name': self.name,
+                    'phone_number': self.phone
+                }), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then(response => {
+                        self.signIn();
+                        self.text1 = response;
+                        self.dialog2 = false;
+                        self.snackbar = true;
+                        self.text = 'Your account have been created';
+                        self.$router.replace('home');
+                        self.$store.commit('logIn', true);
+                    })
+                    .catch(error => {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
+                    });
             }
         }
     }
