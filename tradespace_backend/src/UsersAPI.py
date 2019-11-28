@@ -11,7 +11,7 @@ users_api = Blueprint('users_api', __name__)
 def get_user():
   user_id = g.uid
   user = firebase_auth.get_user(user_id)
-  user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number)
+  user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
   return user_data
 
 @users_api.route('/<string:user_id>', methods=['GET'])
@@ -19,7 +19,7 @@ def get_user():
 def get_user_with_id(user_id):
   try:
     user = firebase_auth.get_user(user_id)
-    user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number)
+    user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
     return user_data
   except firebase_auth_utils.UserNotFoundError:
     return {'error': 'user id not found'}, 400
@@ -27,13 +27,12 @@ def get_user_with_id(user_id):
 @users_api.route('/', methods=['POST'])
 def create_user():
   try:
-    # jsonData = request.get_json()
-    # print(jsonData['email'])
     email = request.form['email']
     password = request.form['password']
     display_name = request.form['display_name']
     phone_number = request.form['phone_number']
-    user = firebase_auth.create_user(email=email, password=password, display_name=display_name, phone_number=phone_number)
+    photo_url = request.form['photo_url']
+    user = firebase_auth.create_user(email=email, password=password, display_name=display_name, phone_number=phone_number, photo_url=photo_url)
     return "User Created", 201
   except firebase_auth_utils.EmailAlreadyExistsError:
     return {'error': 'email already exists'}, 400
