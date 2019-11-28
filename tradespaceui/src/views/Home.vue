@@ -130,7 +130,7 @@
             dialog2: false,
             text1: {},
             text: '',
-            snackbar: false
+            snackbar: false,
         }),
         methods: {
             signUp: function () {

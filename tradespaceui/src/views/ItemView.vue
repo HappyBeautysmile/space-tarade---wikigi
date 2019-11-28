@@ -1,9 +1,9 @@
 <template>
-    
+
     <b-container fluid style="padding: 80px 40px 0 40px">
         <b-card class="overflow-hidden">
             <b-row>
-                <b-col >
+                <b-col>
                     <b-card-img :src='itemImage' class="rounded-0"></b-card-img>
                 </b-col>
                 <b-col>
@@ -12,9 +12,9 @@
                             <v-img :src="avatar"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title class="headline"> {{itemTitle}} </v-list-item-title>
+                            <v-list-item-title class="headline"> {{itemTitle}}</v-list-item-title>
                             <router-link :to="name">
-                            <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
+                                <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
                             </router-link>
                             <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
                         </v-list-item-content>
@@ -27,8 +27,8 @@
                     </b-card-body>
 
                     <div style="padding: 10px">
-                        <v-btn large> Start Trade</v-btn>
-                        <v-btn large style="margin-left: 30px"> Hide </v-btn>
+                        <v-btn large>Start Trade</v-btn>
+                        <v-btn large style="margin-left: 30px" @click="$router.go(-1)"> Hide</v-btn>
                     </div>
                 </b-col>
             </b-row>
@@ -38,18 +38,72 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    // import router from "../router";
+    // import qs from 'querystring';
+
     export default {
         data() {
             return {
-                name: 'Nikita',
-                itemTitle: 'Adidas shoes',
-                location: 'Los Angeles, CA',
-                avatar: "https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-9/22449875_913694855449733_82882405759448142_n.jpg?_nc_cat=101&_nc_oc=AQncaWWuWzFfxdVtK5P69Jl-sJRqNOoHsimpBnysDiZ4IU6CrUGl_iMle5gtvd83ylHYe0ve-pmotMRHVvP7ufkn&_nc_ht=scontent-lax3-1.xx&oh=8a7bc0b583f64c997324885cbafb92a0&oe=5E627D59",
-                description: 'Good shoes almost new..Adidas AG is a multinational corporation, founded and headquartered in Herzogenaurach, Germany, that designs and manufactures shoes, clothing and accessories. It is the largest sportswear manufacturer in Europe, and the second largest in the world, after Nike.',
-                itemImage: "https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fcom.ft.imagepublish.upp-prod-us.s3.amazonaws.com%2F4c1140ec-8826-11e8-affd-da9960227309?fit=scale-down&source=next&width=700"
+                name: '',
+                itemTitle: '',
+                location: 'SF',
+                tags: [],
+                owner_uid: '',
+                avatar: "",
+                description: '',
+                itemImage: ""
 
             }
-        }
+        },
+        methods: {
+            back: function () {
+                this.$router.replace('search');
+            }
+        },
+        created() {
+            // alert('CHECK')
+            let self = this;
+            axios.get('/items/' + 'zXyO8kIkustrX3CU8EVt', {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'token ' + self.$store.getters.authToken
+                }
+            })
+                .then(response => {
+                    // alert(response)
+                    let item = response.data;
+                    self.location = item['location'];
+                    self.itemTitle = item['title'];
+                    self.tags = item['tags'];
+                    self.owner_uid = item['owner_uid'];
+                    self.photo_url = item['photo_url'];
+                    self.description = item['description'];
+                    self.itemImage = item['photo_url'];
+                    axios.get('/users/' + self.owner_uid, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization': 'token ' + self.$store.getters.authToken
+                        }
+                    })
+                        .then(response => {
+                            let user = response.data;
+                            self.name = user['display_name'];
+                            // self.name = user['display_name'];
+                        })
+                        .catch(error => {
+                            let errorCode = error.code;
+                            let errorMessage = error.message;
+                            alert("ERROR " + errorCode + ":" + errorMessage);
+                        });
+                })
+                .catch(error => {
+                    let errorCode = error.code;
+                    let errorMessage = error.message;
+                    alert("ERROR " + errorCode + ":" + errorMessage);
+                });
+        },
+
     };
 </script>
 
@@ -61,9 +115,9 @@
         margin-top: 10%;
         margin-left: 5%;
         float: left;
-      }
-    
-      .item_action {
+    }
+
+    .item_action {
         margin: 10px;
-      }
+    }
 </style>
