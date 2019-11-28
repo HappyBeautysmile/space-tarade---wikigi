@@ -116,7 +116,7 @@ export default {
       })
           .then(response => {
               alert(response);
-              
+              //Get back an Item variable. Not sure if the information is needed, but it is not used.
               self.$router.replace('home');
 
               // let item = response.data;
