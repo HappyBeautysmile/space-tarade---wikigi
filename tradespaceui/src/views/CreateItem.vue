@@ -60,13 +60,19 @@
     </div>
 
     <div style="padding: 10px">
-      <v-btn large color="primary"> Submit</v-btn>
+      <v-btn large color="primary" @click="addItem"> Submit</v-btn>
       <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
     </div>
   </b-container>
 </template>
 
 <script>
+
+
+import axios from 'axios';
+import qs from 'querystring';
+
+
 export default {
   data: () => ({
     location: "",
@@ -93,8 +99,49 @@ export default {
     },
     removeTag(tagToRemove) {
       this.tags = this.tags.filter(item => item.name != tagToRemove);
+    },
+    addItem() {
+      let self = this;
+      axios.post('/items/', qs.stringify({
+          'title': self.title,
+          'location': self.location,
+          'description': self.description,
+          'tags': self.tags,
+          'photo_url': self.photo_url
+      }), {
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': 'token ' + self.$store.getters.authToken
+          }
+      })
+          .then(response => {
+              alert(response);
+              
+              self.$router.replace('home');
+
+              // let item = response.data;
+              // self.location = item['location'];
+              // self.itemTitle = item['title'];
+              // self.tags = item['tags'];
+              // //NOT SURE EXACTLY WHAT IS THE USE OF NEWTAG. Maybe need to edit bc of it?
+              // self.itemImage = item['photo_url'];
+              // self.description = item['description'];
+
+              // self.owner_uid = item['owner_uid'];
+          })
+          .catch(error => {
+              let errorCode = error.code;
+              let errorMessage = error.message;
+              alert(errorCode + ":" + errorMessage);
+              self.text = "ERROR " + errorCode + ":" + errorMessage;
+          });
     }
   }
+
+
+
+
+
 };
 </script>
 
