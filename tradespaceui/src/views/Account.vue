@@ -34,7 +34,7 @@ export default {
     settings: [
       { name: "My Items", dest: "history" },
       { name: "My Trades", dest: "history" },
-      { name: "Account Settings", dest: "update" }
+      { name: "Update Information", dest: "update" }
     ],
     display_name: "",
     phone_number: "",

@@ -1,10 +1,41 @@
 <template>
   <b-container style="padding: 80px 40px 0 40px">
+
     <div style="padding-bottom: 30px">
-      <div class="mt-3">
-        Edit Profile Picture: {{ itemImage ? itemImage.name : "" }}
-      </div>
-      <br />
+      Edit Name:
+      <b-form-input
+        v-model="display_name"
+        label="Name"
+        placeholder="Name"
+        style="margin-top: 10px"
+        required
+      ></b-form-input>
+    </div>
+
+    <div style="padding-bottom: 30px">
+      Edit Phone Number:
+      <b-form-input
+        v-model="phone_number"
+        label="Phone Number"
+        placeholder="Phone Number"
+        style="margin-top: 10px"
+        required
+      ></b-form-input>
+    </div>
+
+    <div style="padding-bottom: 30px">
+      Edit Email:
+      <b-form-input
+        v-model="email"
+        label="Email"
+        placeholder="Email"
+        style="margin-top: 10px"
+        required
+      ></b-form-input>
+    </div>
+
+    <div style="padding-bottom: 30px">
+      Edit Profile Picture:
       <b-form-file
         v-model="itemImage"
         :state="Boolean(itemImage)"
@@ -13,50 +44,8 @@
       ></b-form-file>
     </div>
 
-    <b-form-input
-      v-model="location"
-      label="Location"
-      placeholder="Location"
-      style="margin-top: 10px"
-      required
-    ></b-form-input>
-
-    <b-form-input
-      v-model="phone_number"
-      label="Phone Number"
-      placeholder="Phone Number"
-      style="margin-top: 10px"
-      required
-    ></b-form-input>
-
-
-    <b-form-input
-      v-model="oldEmail"
-      label="Old Email"
-      placeholder="Old Email"
-      style="margin-top: 10px"
-
-      required
-    ></b-form-input>
-
-    <b-form-input
-      v-model="newEmail"
-      label="New Email"
-      placeholder="New Email"
-      style="margin-top: 10px"
-      required
-    ></b-form-input>
-
-    <b-form-input
-      v-model="newEmail"
-      label="New Email2"
-      placeholder="Type In Your New Email Again"
-      style="margin-top: 10px"
-      required
-    ></b-form-input>
-
-    <div style="padding: 10px">
-      <v-btn large color="primary"> Submit</v-btn>
+    <div style="padding: 30px">
+      <v-btn large color="primary" text @click="updateUser"> Submit </v-btn>
       <router-link to="/account">
         <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
       </router-link>    
@@ -65,17 +54,73 @@
 </template>
 
 <script>
+
+import axios from 'axios';
+import qs from 'querystring';
+
 export default {
+
   name: "Account",
   components: {},
   data: () => ({
-    oldEmail: "",
-    newEmail: "",
-    newEmailRepeat: "",
-    itemImage: null,
-    location: ""
-  })
+    display_name: "",
+    phone_number: "",
+    email: "",
+    photo_url: "",
+    itemImage: null
+  }),
+  methods: {
+    updateUser: function () {
+      let self = this;
+      axios.post('/users/update/', qs.stringify({
+        'email': self.email,
+        'display_name': self.display_name,
+        'phone_number': self.phone_number,
+        'photo_url': self.photo_url
+      }), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'token ' + self.$store.getters.authToken
+        }
+      })
+      .then(response => {
+        self.text1 = response;
+        self.dialog2 = false;
+        self.snackbar = true;
+        self.text = 'Your account has been updated';
+        self.$router.replace('account');
+      })
+      .catch(error => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        self.snackbar = true;
+        self.text = "ERROR " + errorCode + ":" + errorMessage;
+      });
+    }
+  },
+  created() {
+    let self = this;
+    axios.get('/users/', {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'token ' + self.$store.getters.authToken
+        }
+    })
+        .then(response => {
+            let userInfo = response.data;
+            self.display_name = userInfo['display_name'];
+            self.phone_number = userInfo['phone_number'];
+            self.email = userInfo['email'];
+            self.photo_url = userInfo['photo_url'];
+        })
+        .catch(error => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            alert("ERROR " + errorCode + ":" + errorMessage);
+        });
+  },
 };
+
 </script>
 
 <style scoped>
