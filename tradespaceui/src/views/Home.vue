@@ -68,9 +68,13 @@
                                             <v-text-field label="Password*" type="password" required
                                                           v-model="password"></v-text-field>
                                         </v-col>
+                                        <v-col cols="12">
+                                            <v-file-input label="Profile Picture*" required
+                                                          v-model="profile"></v-file-input>
+                                        </v-col>
                                     </v-row>
                                 </v-container>
-                                <small>*indicates required field</small>
+                                <small>* indicates required field<br></small>
                                 <small>Have an account already, sign in:
                                     <v-btn color="blue darken-1" text @click="dialog2 = false, dialog1 = true">Sign In
                                     </v-btn>
