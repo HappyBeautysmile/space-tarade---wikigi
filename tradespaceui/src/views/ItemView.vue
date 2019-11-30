@@ -22,10 +22,14 @@
           <b-card-body title>
             <b-card-text>{{description}}</b-card-text>
           </b-card-body>
-                <!-- TODO: Add two options: 1 for if it is viewing a user's items. 2 for if it is a different item. -->
                     <div style="padding: 10px">
                         <v-btn large v-if="notEditMode" @click="$router.push(/* Input trading page here */'/mytrades')">Start Trade</v-btn>
+                        
+                        <!-- TODO: Go to edit page with the parameter as the item-id. Currently doesn't do that but can do it with lines below -->
                         <v-btn large v-if="editMode" @click="$router.push(/* Input edit page here */'/editItem')">Edit Item</v-btn>
+                        <!-- <v-btn large v-if="editMode" @click="$router.push({ name: 'editItem', params: { userId: 'zXyO8kIkustrX3CU8EVt' } })">Edit Item</v-btn> -->
+                        <!-- <v-btn large v-if="editMode" @click="$router.push({ path: `/user/${userId}` })">Edit Item</v-btn> -->
+
                         <v-btn large style="margin-left: 30px" @click="$router.go(-1)">Back</v-btn>
                     </div>
             </b-col>

@@ -144,7 +144,7 @@ export default {
   created() {
     // alert('CHECK')
     let self = this;
-    axios.get('/items/' + /*INPUT ITEM ID OF ITEM HERE*/ 'zXyO8kIkustrX3CU8EVt', {
+    axios.get('/items/' + /*TODO: GET ITEM-ID AND INPUT ITEM ID OF ITEM HERE:*/ 'zXyO8kIkustrX3CU8EVt', {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'token ' + self.$store.getters.authToken
