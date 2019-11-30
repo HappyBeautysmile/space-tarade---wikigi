@@ -36,9 +36,11 @@ def get_item(item_id):
   try:
     item_dict = db.collection(ITEMS_COLLECTION).document(item_id).get().to_dict()
     item = Item.from_dict(item_dict)
+    item_info = item.to_dict()
+    item_info['item_id'] = item_id
   except:
     return {'error': 'item not found'}, 404
-  return item.to_dict(), 200
+  return item_info, 200
 
 @items_api.route('/<string:item_id>', methods=['PUT'])
 @auth.login_required
@@ -102,6 +104,8 @@ def get_items():
 
   result = {}
   for item in items:
-    result[item.id] = item.to_dict()
+    item_info = item.to_dict()
+    item_info['item_id'] = item_id
+    result[item.id] = item_info
 
   return result, 200
