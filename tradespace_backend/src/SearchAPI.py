@@ -1,16 +1,23 @@
-from flask import Blueprint, request, g
+from flask import Blueprint, request, g, jsonify
 from firebase_admin import firestore
 from fuzzywuzzy import fuzz
+from src.TokenAuthentication import auth
 
 search_api = Blueprint('search_api', __name__)
 ITEMS_COLLECTION = 'items'
 
-@search_api.route('/', methods=['GET'])
-def search():
+@search_api.route('/<string:search_text>', methods=['GET'])
+@auth.login_required
+def search(search_text):
+  print('Search!:')
   db = firestore.client()
-  search_str = request.args.get('search')
+  print(str(request))
+  search_str = search_text
+  print('check1')
   if search_str is None:
+    print('No search string')
     return {'error': 'must pass a search string'}, 401
+  print('CHECK2')
   items = db.collection(ITEMS_COLLECTION).stream()
   matched_items = {}
   for item in items:
@@ -31,4 +38,5 @@ def search():
   matched_items_list = []
   for i in sorted(matched_items, reverse=True):
     matched_items_list += matched_items[i]
-  return {'results': matched_items_list}
+  print(matched_items_list)
+  return jsonify(data=matched_items_list)
