@@ -22,14 +22,15 @@
           <b-card-body title>
             <b-card-text>{{description}}</b-card-text>
           </b-card-body>
-
+                <!-- TODO: Add two options: 1 for if it is viewing a user's items. 2 for if it is a different item. -->
                     <div style="padding: 10px">
-                        <v-btn large>Start Trade</v-btn>
-                        <v-btn large style="margin-left: 30px" @click="$router.go(-1)"> Hide</v-btn>
+                        <v-btn large v-if="notEditMode" @click="$router.push(/* Input trading page here */'/mytrades')">Start Trade</v-btn>
+                        <v-btn large v-if="editMode" @click="$router.push(/* Input edit page here */'/editItem')">Edit Item</v-btn>
+                        <v-btn large style="margin-left: 30px" @click="$router.go(-1)">Back</v-btn>
                     </div>
-                </b-col>
-            </b-row>
-        </b-card>
+            </b-col>
+        </b-row>
+    </b-card>
 
     </b-container>
 </template>
@@ -49,8 +50,11 @@
                 owner_uid: '',
                 avatar: "",
                 description: '',
-                itemImage: ""
-
+                itemImage: "",
+                curUserID: '',
+                email: '',
+                editMode: false,
+                notEditMode: true
             }
         },
         methods: {
@@ -86,19 +90,46 @@
                         .then(response => {
                             let user = response.data;
                             self.name = user['display_name'];
+                            self.email = user['email'];
                         })
                         .catch(error => {
                             let errorCode = error.code;
                             let errorMessage = error.message;
                             alert("ERROR " + errorCode + ":" + errorMessage);
                         });
-                })
+                    
+                    //BELOW IS GETTING CURRENT USER. IF IT IS THE SAME USER, THEN WE WILL EDIT. 
+                    //TODO: CHANGE THIS TO COMPARE BY ID WHEN API CHANGES!
+                    axios.get('/users/', {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization': 'token ' + self.$store.getters.authToken
+                        }
+                    })
+                        .then(response => {
+                            let userInfo = response.data;
+                            self.curUserEmail = userInfo['email'];
+                            if(self.curUserEmail == self.email) {
+                                self.editMode = true;
+                            }
+                            else {
+                                alert(self.curUserEmail);
+                                alert(self.email);
+                            }
+                            self.notEditMode = !(self.editMode);
+                        })
+                        .catch(error => {
+                            let errorCode = error.code;
+                            let errorMessage = error.message;
+                            alert("ERROR " + errorCode + ":" + errorMessage);
+                        });
+                    })
                 .catch(error => {
                     let errorCode = error.code;
                     let errorMessage = error.message;
                     alert("ERROR " + errorCode + ":" + errorMessage);
                 });
-        },
+            },
 };
 </script>
 
