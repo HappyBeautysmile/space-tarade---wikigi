@@ -105,7 +105,7 @@ def get_items():
   result = {}
   for item in items:
     item_info = item.to_dict()
-    item_info['item_id'] = item_id
+    item_info['item_id'] = item.id
     result[item.id] = item_info
 
   return result, 200
