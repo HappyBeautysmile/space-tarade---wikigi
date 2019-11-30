@@ -56,7 +56,7 @@ const routes = [
   {
     path: "/createItem",
     name: "createItem",
-    component: () => import("../views/CreateItem.vue"),
+    component: () => import("../views/CreateItem.vue")
     // meta: {
     //   requiresAuth: true
     // }
@@ -87,6 +87,15 @@ const routes = [
     //   requiresAuth: true
     // },
     component: () => import("../views/History.vue")
+  },
+
+  {
+    path: "/mytrades",
+    name: "mytrades",
+    // meta: {
+    //   requiresAuth: true
+    // },
+    component: () => import("../views/MyTrades.vue")
   }
 ];
 
