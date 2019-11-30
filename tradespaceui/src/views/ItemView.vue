@@ -86,7 +86,6 @@
                         .then(response => {
                             let user = response.data;
                             self.name = user['display_name'];
-                            // self.name = user['display_name'];
                         })
                         .catch(error => {
                             let errorCode = error.code;
@@ -100,9 +99,6 @@
                     alert("ERROR " + errorCode + ":" + errorMessage);
                 });
         },
-
-    };
-  }
 };
 </script>
 

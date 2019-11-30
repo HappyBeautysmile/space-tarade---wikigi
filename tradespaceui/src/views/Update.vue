@@ -1,8 +1,12 @@
 <template>
   <b-container style="padding: 80px 40px 0 40px">
 
+    <h1 class="mytradestitle" style="text-align:center">
+      UPDATE ACCOUNT
+    </h1>
+
     <div style="padding-bottom: 30px">
-      Edit Name:
+      Name:
       <b-form-input
         v-model="display_name"
         label="Name"
@@ -13,7 +17,7 @@
     </div>
 
     <div style="padding-bottom: 30px">
-      Edit Phone Number:
+      Phone Number:
       <b-form-input
         v-model="phone_number"
         label="Phone Number"
@@ -24,7 +28,7 @@
     </div>
 
     <div style="padding-bottom: 30px">
-      Edit Email:
+      Email:
       <b-form-input
         v-model="email"
         label="Email"
@@ -35,7 +39,7 @@
     </div>
 
     <div style="padding-bottom: 30px">
-      Edit Profile Picture:
+      Profile Picture:
       <b-form-file
         v-model="itemImage"
         :state="Boolean(itemImage)"
@@ -45,7 +49,7 @@
     </div>
 
     <div style="padding: 30px">
-      <v-btn large color="primary" text @click="updateUser"> Submit </v-btn>
+      <v-btn large color="primary" @click="updateUser"> Submit </v-btn>
       <router-link to="/account">
         <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
       </router-link>    
