@@ -3,6 +3,7 @@
         <v-card
                 class="mx-auto"
                 max-width="344"
+                hover="true"
         >
             <v-list-item>
                 <v-list-item-avatar color="grey">
