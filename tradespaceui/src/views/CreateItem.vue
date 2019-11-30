@@ -105,7 +105,7 @@ export default {
     addItem() {
       let self = this;
       axios.post('/items/', qs.stringify({
-          'title': self.title,
+          'title': self.itemTitle,
           'location': self.location,
           'description': self.description,
           'tags': self.tags,

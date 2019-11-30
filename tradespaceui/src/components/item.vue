@@ -30,16 +30,6 @@
         props: [
             'item'
             //Item contains an array with all the different components
-
-            //'item', 'location', 'title', 'tags', 'owner_uid', 'photo_url', 'description'
-
-            // self.location = item['location'];
-            // self.itemTitle = item['title'];
-            // self.tags = item['tags'];
-            // self.owner_uid = item['owner_uid'];
-            // self.photo_url = item['photo_url'];
-            // self.description = item['description'];
-            // self.itemImage = item['photo_url'];
         ],
         data: () => ({
             itemTitle: '',
@@ -77,40 +67,6 @@
                     alert("ERROR " + errorCode + ":" + errorMessage);
                 });
         }
-        // return {
-        //     itemTitle: this.item['title'],
-        //     itemLocation: this.location,
-        //     itemTags: this.tags,
-        //     itemOwner_uid: this.owner_uid,
-        //     avatar: this.photo_url, //TODO: FIX OWNER AVATAR
-        //     itemDescription: this.item['description'],
-        //     itemImage: this.photo_url
-
-        // }
-        ,
-
-        //TODO: MAKE A METHOD TO "GET" A USER'S PROFILE PICTURE
-
-
-        // data ({
-        //     return {
-        //         name: '',
-        //         itemTitle: '',
-        //         location: 'SF',
-        //         tags: [],
-        //         owner_uid: '',
-        //         avatar: "",
-        //         description: '',
-        //         itemImage: ""
-
-        //     }
-        //     // show: false,
-        //     // items: [
-        //     //     {src: 'https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-9/22449875_913694855449733_82882405759448142_n.jpg?_nc_cat=101&_nc_oc=AQncaWWuWzFfxdVtK5P69Jl-sJRqNOoHsimpBnysDiZ4IU6CrUGl_iMle5gtvd83ylHYe0ve-pmotMRHVvP7ufkn&_nc_ht=scontent-lax3-1.xx&oh=8a7bc0b583f64c997324885cbafb92a0&oe=5E627D59'},
-        //     //     {src: 'https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-9/22449875_913694855449733_82882405759448142_n.jpg?_nc_cat=101&_nc_oc=AQncaWWuWzFfxdVtK5P69Jl-sJRqNOoHsimpBnysDiZ4IU6CrUGl_iMle5gtvd83ylHYe0ve-pmotMRHVvP7ufkn&_nc_ht=scontent-lax3-1.xx&oh=8a7bc0b583f64c997324885cbafb92a0&oe=5E627D59'}
-        //     // ]
-        // }),
-
 
     }
     ;

@@ -33,8 +33,8 @@ export default {
   data: () => ({
     settings: [
       { name: "My Items", dest: "history" },
-      { name: "My Trades", dest: "history" },
-      { name: "Update Information", dest: "update" }
+      { name: "My Trades", dest: "mytrades" },
+      { name: "My Account", dest: "update" }
     ],
     display_name: "",
     phone_number: "",

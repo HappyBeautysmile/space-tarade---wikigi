@@ -1,30 +1,27 @@
 <template>
+  <b-container fluid style="padding: 80px 40px 0 40px">
+    <b-card class="overflow-hidden">
+      <b-row>
+        <b-col>
+          <b-card-img :src="itemImage" class="rounded-0"></b-card-img>
+        </b-col>
+        <b-col>
+          <v-list-item>
+            <v-list-item-avatar color="grey">
+              <v-img :src="avatar"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="headline">{{itemTitle}}</v-list-item-title>
+              <router-link :to="name">
+                <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
+              </router-link>
+              <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
-    <b-container fluid style="padding: 80px 40px 0 40px">
-        <b-card class="overflow-hidden">
-            <b-row>
-                <b-col>
-                    <b-card-img :src='itemImage' class="rounded-0"></b-card-img>
-                </b-col>
-                <b-col>
-                    <v-list-item>
-                        <v-list-item-avatar color="grey">
-                            <v-img :src="avatar"></v-img>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title class="headline"> {{itemTitle}}</v-list-item-title>
-                            <router-link :to="name">
-                                <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
-                            </router-link>
-                            <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-
-                    <b-card-body title="">
-                        <b-card-text>
-                            {{description}}
-                        </b-card-text>
-                    </b-card-body>
+          <b-card-body title>
+            <b-card-text>{{description}}</b-card-text>
+          </b-card-body>
 
                     <div style="padding: 10px">
                         <v-btn large>Start Trade</v-btn>
@@ -89,7 +86,6 @@
                         .then(response => {
                             let user = response.data;
                             self.name = user['display_name'];
-                            // self.name = user['display_name'];
                         })
                         .catch(error => {
                             let errorCode = error.code;
@@ -103,21 +99,20 @@
                     alert("ERROR " + errorCode + ":" + errorMessage);
                 });
         },
-
-    };
+};
 </script>
 
 <style scoped>
-    #container {
-        grid-area: main;
-        align-self: center;
-        justify-self: center;
-        margin-top: 10%;
-        margin-left: 5%;
-        float: left;
-    }
+#container {
+  grid-area: main;
+  align-self: center;
+  justify-self: center;
+  margin-top: 10%;
+  margin-left: 5%;
+  float: left;
+}
 
-    .item_action {
-        margin: 10px;
-    }
+.item_action {
+  margin: 10px;
+}
 </style>
