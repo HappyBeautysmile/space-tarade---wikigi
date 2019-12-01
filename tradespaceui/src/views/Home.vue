@@ -151,7 +151,7 @@
                         self.dialog2 = false;
                         self.snackbar = true;
                         self.text = 'Your account have been created';
-                        self.$router.replace('home');
+                        // self.$router.replace('home');
                         self.$store.commit('logIn', true);
                     })
                     .catch(error => {
@@ -173,7 +173,7 @@
                             self.text = "ERROR:" + error;
                         });
                         self.text = 'Welcome back!';
-                        self.$router.replace('home');
+                        // self.$router.replace('home');
                         self.$store.commit('logIn', true)
                     },
                     function (error) {
