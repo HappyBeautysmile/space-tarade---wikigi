@@ -10,6 +10,7 @@
         :state="Boolean(itemImage)"
         placeholder="Choose a file or drop it here..."
         drop-placeholder="Drop file here..."
+        @change="selectImage"
       ></b-form-file>
     </div>
 
@@ -71,6 +72,7 @@
 <script>
 
 
+import firebase from 'firebase';
 import axios from 'axios';
 import qs from 'querystring';
 
@@ -102,44 +104,73 @@ export default {
     removeTag(tagToRemove) {
       this.tags = this.tags.filter(item => item.name != tagToRemove);
     },
+    selectImage: function(file) {
+      this.itemImage = file;
+    },
     editItem() {
       let self = this;
-      axios.post('/items/', qs.stringify({
-          'title': self.itemTitle,
-          'location': self.location,
-          'description': self.description,
-          'tags': self.tags,
-          'photo_url': self.photo_url
-      }), {
+      // upload the photo and get url
+      var storage_ref = firebase.storage().ref();
+      var auth_token = self.$store.getters.authToken
+      axios.put('/users/', {
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-              'Authorization': 'token ' + self.$store.getters.authToken
+              'Authorization': 'token ' + auth_token
           }
       })
           .then(response => {
-              alert(response);
-              //Get back an Item variable. Not sure if the information is needed, but it is not used.
-              self.$router.replace('home');
-
-              // let item = response.data;
-              // self.location = item['location'];
-              // self.itemTitle = item['title'];
-              // self.tags = item['tags'];
-              // //NOT SURE EXACTLY WHAT IS THE USE OF NEWTAG. Maybe need to edit bc of it?
-              // self.itemImage = item['photo_url'];
-              // self.description = item['description'];
-
-              // self.owner_uid = item['owner_uid'];
+              let userInfo = response.data;
+              self.user_id = userInfo['user_id']
+              console.log(self.user_id);
+              var image_path = self.user_id + "/" + self.itemTitle
+              var profile_ref = storage_ref.child(image_path)
+              const profile_metadata = { contentType: self.itemImage.type }
+              profile_ref.put(self.itemImage, profile_metadata);
+              var photo_url = "gs://tradespace-22f37.appspot.com/" + image_path;
+              self.uploadItem(auth_token, photo_url);
           })
           .catch(error => {
               let errorCode = error.code;
               let errorMessage = error.message;
-              alert(errorCode + ":" + errorMessage);
-              self.text = "ERROR " + errorCode + ":" + errorMessage;
+              alert("ERROR " + errorCode + ":" + errorMessage);
           });
+    },
+    uploadItem: function(auth_token, photo_url) {
+        axios.post('/items/', qs.stringify({
+            'title': self.itemTitle,
+            'location': self.location,
+            'description': self.description,
+            'tags': self.tags,
+            'photo_url': photo_url
+        }), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'token ' + auth_token
+            }
+        })
+            .then(response => {
+                alert(response);
+                //Get back an Item variable. Not sure if the information is needed, but it is not used.
+                self.$router.replace('home');
+
+                // let item = response.data;
+                // self.location = item['location'];
+                // self.itemTitle = item['title'];
+                // self.tags = item['tags'];
+                // //NOT SURE EXACTLY WHAT IS THE USE OF NEWTAG. Maybe need to edit bc of it?
+                // self.itemImage = item['photo_url'];
+                // self.description = item['description'];
+
+                // self.owner_uid = item['owner_uid'];
+            })
+            .catch(error => {
+                let errorCode = error.code;
+                let errorMessage = error.message;
+                alert(errorCode + ":" + errorMessage);
+                self.text = "ERROR " + errorCode + ":" + errorMessage;
+            });
     }
   },
-
 
   created() {
     // alert('CHECK')
@@ -176,8 +207,8 @@ export default {
                     let errorMessage = error.message;
                     alert("ERROR " + errorCode + ":" + errorMessage);
                 });
-            
-            //BELOW IS GETTING CURRENT USER. IF IT IS THE SAME USER, THEN WE WILL EDIT. 
+
+            //BELOW IS GETTING CURRENT USER. IF IT IS THE SAME USER, THEN WE WILL EDIT.
             //TODO: CHANGE THIS TO COMPARE BY ID WHEN API CHANGES!
             })
         .catch(error => {
