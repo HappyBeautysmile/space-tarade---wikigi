@@ -25,7 +25,7 @@
                     <div style="padding: 10px">
                         <v-btn large v-if="notEditMode" @click="$router.push(/* Input trading page here */'/mytrades')">Start Trade</v-btn>
                         
-                        <!-- TODO: Go to edit page with the parameter as the item-id. Currently doesn't do that but can do it with lines below -->
+                        <!-- TODO: Go to edit page with the parameter as the item_id. Currently doesn't do that but can do it with lines below -->
                         <v-btn large v-if="editMode" @click="$router.push(/* Input edit page here */'/editItem')">Edit Item</v-btn>
                         <!-- <v-btn large v-if="editMode" @click="$router.push({ name: 'editItem', params: { userId: 'zXyO8kIkustrX3CU8EVt' } })">Edit Item</v-btn> -->
                         <!-- <v-btn large v-if="editMode" @click="$router.push({ path: `/user/${userId}` })">Edit Item</v-btn> -->
@@ -56,7 +56,7 @@
                 description: '',
                 itemImage: "",
                 curUserID: '',
-                email: '',
+                itemUserID: '',
                 editMode: false,
                 notEditMode: true
             }
@@ -94,7 +94,7 @@
                         .then(response => {
                             let user = response.data;
                             self.name = user['display_name'];
-                            self.email = user['email'];
+                            self.itemUserID = user['user_id'];
                         })
                         .catch(error => {
                             let errorCode = error.code;
@@ -112,13 +112,13 @@
                     })
                         .then(response => {
                             let userInfo = response.data;
-                            self.curUserEmail = userInfo['email'];
-                            if(self.curUserEmail == self.email) {
+                            self.curUserID = userInfo['user_id'];
+                            if(self.curUserID == self.itemUserID) {
                                 self.editMode = true;
                             }
                             else {
-                                alert(self.curUserEmail);
-                                alert(self.email);
+                                alert(self.curUserID);
+                                alert(self.itemUserID);
                             }
                             self.notEditMode = !(self.editMode);
                         })
