@@ -11,7 +11,7 @@ users_api = Blueprint('users_api', __name__)
 def get_user():
   user_id = g.uid
   user = firebase_auth.get_user(user_id)
-  user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
+  user_data = jsonify(user_id=user_id, display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
   return user_data
 
 @users_api.route('/<string:user_id>', methods=['GET'])
@@ -19,7 +19,7 @@ def get_user():
 def get_user_with_id(user_id):
   try:
     user = firebase_auth.get_user(user_id)
-    user_data = jsonify(display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
+    user_data = jsonify(user_id=user_id, display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
     return user_data
   except firebase_auth_utils.UserNotFoundError:
     return {'error': 'user id not found'}, 400

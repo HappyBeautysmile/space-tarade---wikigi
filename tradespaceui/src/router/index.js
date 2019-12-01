@@ -61,7 +61,14 @@ const routes = [
     //   requiresAuth: true
     // }
   },
-
+  {
+    path: "/editItem",
+    name: "editItem",
+    component: () => import("../views/EditItem.vue")
+    // meta: {
+    //   requiresAuth: true
+    // }
+  },
   {
     path: "/update",
     name: "update",
