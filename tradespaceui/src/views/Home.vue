@@ -54,11 +54,11 @@
                                     <v-row>
                                         <v-col cols="12" sm="8" md="6">
                                             <v-text-field label="Full Name*" required
-                                                          v-model="name"></v-text-field>
+                                                          v-model="display_name"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="8" md="6">
                                             <v-text-field label="Phone Number*" required
-                                                          v-model="phone"></v-text-field>
+                                                          v-model="phone_number"></v-text-field>
                                             <small>Add +1 to the number!</small>
                                         </v-col>
                                         <v-col cols="12">
@@ -69,8 +69,8 @@
                                                           v-model="password"></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-file-input label="Profile Picture*" required
-                                                          v-model="profile"></v-file-input>
+                                            <v-file-input id="prof-picture" label="Profile Picture*" ref="profile_pic" required
+                                                          v-model="profile" @change="selectImage"></v-file-input>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -119,54 +119,66 @@
 </template>
 
 <script>
+
     import firebase from 'firebase';
     import axios from 'axios';
     import qs from 'querystring';
 
     export default {
         data: () => ({
-            name: "",
-            first: "",
+            user_id: "",
+            display_name: "",
+            phone_number: "",
             email: "",
-            phone: "",
             password: "",
+            photo_url: "",
+            image: "",
             dialog1: false,
             dialog2: false,
-            text1: {},
+            user_data: {},
+            dummy_data: {},
             text: '',
             snackbar: false,
+            selectedFile: null
         }),
         methods: {
+            selectImage: function(file) {
+                this.image = file;
+            },
+
             signUp: function () {
                 let self = this;
+
                 axios.post('/users/', qs.stringify({
                     'email': self.email,
                     'password': self.password,
-                    'display_name': self.name,
-                    'phone_number': self.phone
+                    'display_name': self.display_name,
+                    'phone_number': self.phone_number,
+                    'photo_url': 'gs://tradespace-22f37.appspot.com/temp_profile.jpg'
                 }), {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 })
                     .then(response => {
-                        self.signIn();
-                        self.text1 = response;
+                        self.user_data = response.data;
+                        self.initialSignIn();
                         self.dialog2 = false;
                         self.snackbar = true;
                         self.text = 'Your account have been created';
-                        // self.$router.replace('home');
                         self.$store.commit('logIn', true);
                     })
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
                         self.snackbar = true;
-                        self.text = "ERROR " + errorCode + ":" + errorMessage;
+                        self.text = "ERROR " + errorCode + ": " + errorMessage;
                     });
             },
+
             signIn: function () {
-                var self = this;
+                let self = this;
+
                 firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
                     function () {
                         self.dialog1 = false;
@@ -174,7 +186,7 @@
                         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
                             self.$store.commit('setToken', idToken)
                         }).catch(function (error) {
-                            self.text = "ERROR:" + error;
+                            self.text = "ERROR:" + error.message;
                         });
                         self.text = 'Welcome back!';
                         // self.$router.replace('home');
@@ -188,6 +200,59 @@
                     }
                 );
             },
+
+            initialSignIn: function () {
+                let self = this;
+                
+                firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+                    function () {
+                        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+                            self.$store.commit('setToken', idToken);
+                            self.updateInfo();
+                        }).catch(function (error) {
+                            self.text = "ERROR:" + error.message;
+                        }); 
+                        self.$router.replace('home');
+                        self.$store.commit('logIn', true)
+                    },
+                    function (error) {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
+                    }
+                );
+            },
+
+            updateInfo: function () {
+                let self = this;
+
+                var storage_ref = firebase.storage().ref();
+                var profile_ref = storage_ref.child(self.user_data.user_id + '/profile.jpg');
+                const profile_metadata = { contentType: self.image.type };
+                profile_ref.put(self.image, profile_metadata);
+
+                axios.post('/users/update/', qs.stringify({
+                    'email': self.email,
+                    'display_name': self.display_name,
+                    'phone_number': self.phone_number,
+                    'photo_url': 'gs://tradespace-22f37.appspot.com/' + self.user_data.user_id + '/profile.jpg'
+                }), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'token ' + self.$store.getters.authToken
+                    }
+                })
+                    .then(response => {
+                        self.dummy_data = response;
+                    })
+                    .catch(error => {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
+                    });
+            }
         },
     };
 </script>
