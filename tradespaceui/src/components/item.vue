@@ -62,9 +62,9 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" v-if="notEditMode" @click="$router.push(/* Input start trade page here */'/mytrades')">Start Trade</v-btn>
+                        <v-btn text color="primary" v-if="notEditMode" @click="$router.push('/mytrades')">Start Trade</v-btn>
 
-                        <v-btn text color="primary" v-if="editMode" @click="$router.push(/* Input edit page here */'/editItem' /* Add item ID here for URL*/)">Edit Item</v-btn>
+                        <v-btn text color="primary" v-if="editMode" @click="$router.push({path: `/editItem/${itemID}`})">Edit Item</v-btn>
                         <v-btn
                                 color="primary"
                                 text
@@ -141,7 +141,7 @@
                             });
                         }
                     });
-                
+
                 if (self.itemPhoto) {
                     self.photo_path = self.itemPhoto.split('appspot.com/')[1];
                     var storage = firebase.storage();
