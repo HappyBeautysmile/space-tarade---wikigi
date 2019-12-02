@@ -1,6 +1,7 @@
 from flask import Blueprint, request, g
 from src.TokenAuthentication import auth
 from firebase_admin import firestore
+from itertools import chain
 
 from src.ItemsAPI import get_item
 
@@ -274,5 +275,22 @@ def remove_trade(trade_id):
 
 @trades_api.route('/', methods=['GET'])
 @auth.login_required
-def get_trades(trade_id):
-    pass
+def get_trades():
+    db = firestore.client()
+
+    try:
+        trades_collection = db.collection(TRADES_COLLECTION)
+        buyer_trade_docs = trades_collection.where('buyer_id', '==', g.uid).stream()
+        seller_trade_docs = trades_collection.where('seller_id', '==', g.uid).stream()
+    except:
+        return {'error': 'could not update trade status, try again later'}, 500
+
+    all_trade_docs = chain(buyer_trade_docs, seller_trade_docs)
+
+    all_trades = {}
+    for trade_doc in all_trade_docs:
+        trade_dict = trade_doc.to_dict()
+        trade_obj = Trade.from_dict(trade_dict)
+        all_trades[trade_doc.id] = trade_obj.render(g.uid)
+
+    return all_trades
