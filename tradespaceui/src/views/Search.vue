@@ -8,12 +8,15 @@
                             <input type="text" placeholder="Search" required name="search" @input="changed"
                                    v-model="searchText">
                         </div>
-                        <div class="td" id="s-cover">
-                            <button type="submit" @click="search">
-                                <div id="s-circle"></div>
-                                <span></span>
-                            </button>
-                        </div>
+                        <router-link to="/about">
+                            <div class="td" id="s-cover">
+                                <button>
+                                    <div id="s-circle"></div>
+                                    <span></span>
+                                </button>
+                            </div>
+                        </router-link>
+
                     </div>
                     <h1 style="margin: 60px">For example:</h1>
                 </form>
@@ -23,7 +26,7 @@
             <b-container fluid class="p-4 bg-dark">
                 <b-row>
                     <b-col>
-                        <router-link to="/about">
+                        <router-link to="/about" @click="searchText='shoes'">
 
                             <h3 style="color: white">Shoes</h3>
                             <b-img thumbnail fluid
@@ -32,11 +35,11 @@
                         </router-link>
                     </b-col>
                     <b-col>
-                        <router-link to="/about">
+                        <router-link to="/about" @click="searchText='backpack'">
 
-                            <h3 style="color: white">Shoes</h3>
+                            <h3 style="color: white">Backpacks</h3>
                             <b-img thumbnail fluid
-                                   src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-running-shoes-lead-02-1567016766.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*"
+                                   src="https://i.pinimg.com/originals/36/28/c4/3628c4f11274ea97a8e6172a507fd0a6.jpg"
                                    alt="Image 1"></b-img>
                         </router-link>
                     </b-col>
@@ -56,9 +59,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'querystring';
-
     export default {
         name: "Search",
         data: () => ({
@@ -66,37 +66,9 @@
             searchText: ""
         }),
         methods: {
-            changed: function (event) {
-                this.$store.commit('change', event.target.value)
+            changed: function () {
+                this.$store.commit('change', this.searchText)
             },
-            search: function () {
-                let self = this;
-                axios.post('/users/', qs.stringify({
-                    'email': self.email,
-                    'password': self.password,
-                    'display_name': self.name,
-                    'phone_number': self.phone
-                }), {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                    .then(response => {
-                        self.signIn();
-                        self.text1 = response;
-                        self.dialog2 = false;
-                        self.snackbar = true;
-                        self.text = 'Your account have been created';
-                        self.$router.replace('home');
-                        self.$store.commit('logIn', true);
-                    })
-                    .catch(error => {
-                        let errorCode = error.code;
-                        let errorMessage = error.message;
-                        self.snackbar = true;
-                        self.text = "ERROR " + errorCode + ":" + errorMessage;
-                    });
-            }
         }
     }
 </script>

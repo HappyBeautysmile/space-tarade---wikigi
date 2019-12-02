@@ -5,9 +5,9 @@
             <li v-for="item in my_items" v-bind:key="item.description" style="list-style-type:none;">
 
                 <!-- Removed using Item component. Can implement again if we want -->
-                <router-link to="/item/12345uniqueID">
-                  <Item :item="item"></Item>
-                </router-link> 
+                <!-- <router-link to="/item/12345uniqueID"> -->
+                <Item :item="item"></Item>
+                <!-- </router-link>  -->
                 <!-- CAN USE item[''] -->
                 <!-- <router-link to="/item/12345uniqueID">
                     <div id="myitem">

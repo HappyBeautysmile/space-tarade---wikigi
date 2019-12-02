@@ -51,13 +51,15 @@ def update_user():
 @users_api.route('/', methods=['POST'])
 def create_user():
   try:
-    email = request.form['email']
-    password = request.form['password']
-    display_name = request.form['display_name']
-    phone_number = request.form['phone_number']
-    photo_url = request.form['photo_url']
+    data = request.form.to_dict()
+    email = data['email']
+    password = data['password']
+    display_name = data['display_name']
+    phone_number = data['phone_number']
+    photo_url = data['photo_url']
     user = firebase_auth.create_user(email=email, password=password, display_name=display_name, phone_number=phone_number, photo_url=photo_url)
-    return "User Created", 201
+    user_data = jsonify(user_id=user.uid)
+    return user_data, 201
   except firebase_auth_utils.EmailAlreadyExistsError:
     return {'error': 'email already exists'}, 400
   except firebase_auth_utils.PhoneNumberAlreadyExistsError:

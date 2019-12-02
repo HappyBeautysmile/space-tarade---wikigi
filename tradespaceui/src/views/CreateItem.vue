@@ -2,7 +2,7 @@
   <b-container fluid style="padding: 80px 40px 0 40px">
     <div style="padding-bottom: 30px">
       <div class="mt-3">
-        Clothing Images: {{ itemImage ? itemImage.name : "" }}
+        Item Image: {{ itemImage ? itemImage.name : "" }}
       </div>
       <br />
       <b-form-file
@@ -10,6 +10,7 @@
         :state="Boolean(itemImage)"
         placeholder="Choose a file or drop it here..."
         drop-placeholder="Drop file here..."
+        @change="selectImage"
       ></b-form-file>
     </div>
 
@@ -51,7 +52,7 @@
       <b-form-textarea
         id="textarea"
         v-model="description"
-        placeholder="Describe your lit af clothings..."
+        placeholder="Describe your item..."
         rows="3"
         max-rows="6"
       ></b-form-textarea>
@@ -71,6 +72,7 @@
 <script>
 
 
+import firebase from 'firebase';
 import axios from 'axios';
 import qs from 'querystring';
 
@@ -84,7 +86,8 @@ export default {
     itemImage: null,
     newTag: "",
     imageData: null,
-    description: ""
+    description: "",
+    user_id: ""
   }),
 
   methods: {
@@ -102,41 +105,68 @@ export default {
     removeTag(tagToRemove) {
       this.tags = this.tags.filter(item => item.name != tagToRemove);
     },
+    selectImage: function(file) {
+      this.itemImage = file;
+    },
     addItem() {
       let self = this;
-      axios.post('/items/', qs.stringify({
-          'title': self.itemTitle,
-          'location': self.location,
-          'description': self.description,
-          'tags': self.tags,
-          'photo_url': self.photo_url
-      }), {
+      // console.log("title: " + self.itemTitle);
+      // console.log("location: " + self.location);
+      // console.log("description: " + self.description);
+      // upload the photo and get url
+      var storage_ref = firebase.storage().ref();
+      var auth_token = self.$store.getters.authToken
+      axios.get('/users/', {
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-              'Authorization': 'token ' + self.$store.getters.authToken
+              'Authorization': 'token ' + auth_token
           }
       })
           .then(response => {
-              alert(response);
-              //Get back an Item variable. Not sure if the information is needed, but it is not used.
-              self.$router.replace('home');
-
-              // let item = response.data;
-              // self.location = item['location'];
-              // self.itemTitle = item['title'];
-              // self.tags = item['tags'];
-              // //NOT SURE EXACTLY WHAT IS THE USE OF NEWTAG. Maybe need to edit bc of it?
-              // self.itemImage = item['photo_url'];
-              // self.description = item['description'];
-
-              // self.owner_uid = item['owner_uid'];
+              let userInfo = response.data;
+              self.user_id = userInfo['user_id']
+              var image_path = self.user_id + "/" + self.itemTitle
+              var profile_ref = storage_ref.child(image_path)
+              const profile_metadata = { contentType: self.itemImage.type }
+              profile_ref.put(self.itemImage, profile_metadata);
+              var photo_url = "gs://tradespace-22f37.appspot.com/" + image_path;
+              self.uploadItem(auth_token, photo_url);
           })
           .catch(error => {
               let errorCode = error.code;
               let errorMessage = error.message;
-              alert(errorCode + ":" + errorMessage);
-              self.text = "ERROR " + errorCode + ":" + errorMessage;
+              alert("ERROR " + errorCode + ":" + errorMessage);
           });
+    },
+    uploadItem: function(auth_token, photo_url) {
+        let self = this;
+        var i;
+        for (i = 0; i < self.tags.length; i++) {
+          alert(self.tags[i].name);
+        }
+        axios.post('/items/', qs.stringify({
+            'title': self.itemTitle,
+            'location': self.location,
+            'description': self.description,
+            'tags': self.tags,
+            'photo_url': photo_url
+        }), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'token ' + auth_token
+            }
+        })
+            .then(response => {
+                alert("Successfully Uploaded Item: " + response['data']['title']);
+                //Get back an Item variable. Not sure if the information is needed, but it is not used.
+                self.$router.replace('home');
+            })
+            .catch(error => {
+                let errorCode = error.code;
+                let errorMessage = error.message;
+                alert(errorCode + ":" + errorMessage);
+                self.text = "ERROR " + errorCode + ":" + errorMessage;
+            });
     }
   }
 
