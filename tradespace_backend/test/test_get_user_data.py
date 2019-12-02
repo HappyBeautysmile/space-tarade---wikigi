@@ -32,5 +32,5 @@ def test_success_with_uid(client):
   json_data = rv.get_json()
   assert json_data['display_name'] == 'test12345'
   assert json_data['email'] == 'test12345@gmail.com'
-  assert json_data['phone_number'] == '+12222222222'
+  assert json_data['phone_number'] == '+12222222228'
   assert json_data['photo_url'] == 'gs://tradespace-22f37.appspot.com/user2/profile.jpg'
