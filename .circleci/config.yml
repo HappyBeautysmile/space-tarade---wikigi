@@ -53,6 +53,7 @@ jobs:
             . venv/bin/activate
             chmod +x gen_firebase_keys_from_envvar.sh
             ./gen_firebase_keys_from_envvar.sh > instance/tradespace_firebase_admin_key.json
+            echo instance/tradespace_firebase_admin_key.json
             cd test
             pytest
 

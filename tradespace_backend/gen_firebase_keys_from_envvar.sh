@@ -11,4 +11,4 @@ do
         printf ",\n"
     fi
 done
-printf "}"
+printf "}\n"
