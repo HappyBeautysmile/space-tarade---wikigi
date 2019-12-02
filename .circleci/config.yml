@@ -47,7 +47,6 @@ jobs:
       # https://nose.readthedocs.io
       - run:
           name: run tests
-          context: backend_secrets
           command: |
             cd tradespace_backend
             . venv/bin/activate
@@ -60,3 +59,9 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+workflows:
+  version: 2
+  my-workflow:
+    jobs:
+      - build:
+          context: backend_secrets
