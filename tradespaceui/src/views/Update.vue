@@ -133,7 +133,7 @@ export default {
         var profile_ref = storage_ref.child(self.user_id + '/profile.jpg');
         const profile_metadata = { contentType: self.image.type };
         profile_ref.put(self.image, profile_metadata);
-        setTimeout(function(){ self.updateUser(); }, 8000);
+        setTimeout(function(){ self.updateUser(); }, 9000);
       }
       else {
         setTimeout(function(){ self.updateUser(); }, 1000);

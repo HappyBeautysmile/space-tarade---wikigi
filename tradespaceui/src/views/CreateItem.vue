@@ -122,7 +122,6 @@ export default {
           .then(response => {
               let userInfo = response.data;
               self.user_id = userInfo['user_id']
-              console.log(self.user_id);
               var image_path = self.user_id + "/" + self.itemTitle
               var profile_ref = storage_ref.child(image_path)
               const profile_metadata = { contentType: self.itemImage.type }
