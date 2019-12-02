@@ -150,8 +150,7 @@
                         self.item_photo = url;
                     });
                 }
-
-                /*
+                
                 axios.get('/users/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -175,7 +174,7 @@
                         let errorMessage = error.message;
                         alert("ERROR " + errorCode + ":" + errorMessage);
                     });
-                */
+                
             }
 
             // .catch(error => {

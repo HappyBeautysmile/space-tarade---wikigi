@@ -2,7 +2,7 @@
   <b-container fluid style="padding: 80px 40px 0 40px">
     <div style="padding-bottom: 30px">
       <div class="mt-3">
-        Clothing Images: {{ itemImage ? itemImage.name : "" }}
+        Item Image: {{ itemImage ? itemImage.name : "" }}
       </div>
       <br />
       <b-form-file
@@ -42,7 +42,7 @@
       <b-form-textarea
         id="textarea"
         v-model="description"
-        placeholder="Describe your lit af clothings..."
+        placeholder="Describe your item..."
         rows="3"
         max-rows="6"
       ></b-form-textarea>
@@ -51,11 +51,22 @@
     </div>
 
     <div style="padding: 10px">
-      <v-btn large color="primary" @click="editItem"> Submit</v-btn>
-      <router-link to="/account">
+     
+        <v-btn large color="primary" @click="editItem"> Submit</v-btn>
+ 
+      <router-link to="/history">
         <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
       </router-link>
     </div>
+
+    <div class="text-center ma-2">
+      <v-snackbar 
+        v-model="snackbar"
+      >
+        {{ text }}
+      </v-snackbar>
+    </div>
+
   </b-container>
 </template>
 
@@ -77,7 +88,10 @@ export default {
     newTag: "",
     itemID: "",
     imageData: null,
-    description: ""
+    description: "",
+    dialog2: false,
+    snackbar: false,
+    text: ''
   }),
 
   methods: {
@@ -114,17 +128,28 @@ export default {
               self.user_id = userInfo['user_id']
 
               var photo_url = "";
+              var photo_changed = false;
+
               if (self.itemImage != self.old_photo_url) {
                 var image_path = self.user_id + "/" + self.itemTitle
                 var profile_ref = storage_ref.child(image_path)
                 const profile_metadata = { contentType: self.itemImage.type }
                 profile_ref.put(self.itemImage, profile_metadata);
                 photo_url = "gs://tradespace-22f37.appspot.com/" + image_path;
+                photo_changed = true;
+                self.uploadItem(auth_token, photo_url, photo_changed);
+                setTimeout(function(){ self.$router.replace('/history'); }, 11000);
               }
               else {
                 photo_url = self.photo_url;
+                photo_changed = false;
+                self.uploadItem(auth_token, photo_url, photo_changed);
+                setTimeout(function(){ self.$router.replace('/history'); }, 4000);
               }
-              self.uploadItem(auth_token, photo_url);
+
+              self.dialog2 = false;
+              self.snackbar = true;
+              self.text = 'Updating item information...';
           })
           .catch(error => {
               let errorCode = error.code;
@@ -132,13 +157,20 @@ export default {
               alert("ERROR " + errorCode + ":" + errorMessage);
           });
     },
-    uploadItem: function(auth_token, photo_url) {
+    uploadItem: function(auth_token, photo_url, photo_changed) {
       let self = this;
-        axios.post('/items/' + self.itemID, qs.stringify({
+
+      var tags_arr = [];
+      var i;
+      for (i = 0; i < self.tags.length; i++) {
+        tags_arr.push(self.tags[i].name);
+      }
+
+        axios.put('/items/' + self.itemID, qs.stringify({
             'title': self.itemTitle,
             'location': self.location,
             'description': self.description,
-            'tags': self.tags,
+            'tags': tags_arr,
             'photo_url': photo_url
         }), {
             headers: {
@@ -147,10 +179,13 @@ export default {
             }
         })
             .then(response => {
-                alert("Successfully Updated Item: " + response['data']['title']);
+                if (photo_changed == true) {
+                  setTimeout(function(){ alert("Successfully Updated Item: " + response['data']['title']); }, 11000);
+                }
+                else {
+                  setTimeout(function(){ alert("Successfully Updated Item: " + response['data']['title']); }, 4000);
+                }
                 //Get back an Item variable. Not sure if the information is needed, but it is not used.
-                self.$router.replace('home');
-
             })
             .catch(error => {
                 let errorCode = error.code;
