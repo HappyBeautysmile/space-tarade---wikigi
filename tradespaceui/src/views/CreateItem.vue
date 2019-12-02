@@ -110,6 +110,9 @@ export default {
     },
     addItem() {
       let self = this;
+      // console.log("title: " + self.itemTitle);
+      // console.log("location: " + self.location);
+      // console.log("description: " + self.description);
       // upload the photo and get url
       var storage_ref = firebase.storage().ref();
       var auth_token = self.$store.getters.authToken
@@ -122,8 +125,8 @@ export default {
           .then(response => {
               let userInfo = response.data;
               self.user_id = userInfo['user_id']
-              console.log(self.user_id);
-              var image_path = self.user_id + "/" + self.itemTitle
+              // console.log(self.user_id);
+              var image_path = self.user_id + "/" + (self.itemTitle).replace(/ /g,"_");
               var profile_ref = storage_ref.child(image_path)
               const profile_metadata = { contentType: self.itemImage.type }
               profile_ref.put(self.itemImage, profile_metadata);
@@ -135,15 +138,9 @@ export default {
               let errorMessage = error.message;
               alert("ERROR " + errorCode + ":" + errorMessage);
           });
-
-          // var image_path = self.user_id + "/" + self.itemTitle
-          // var profile_ref = storage_ref.child(image_path)
-          // const profile_metadata = { contentType: self.itemImage.type }
-          // profile_ref.put(self.itemImage, profile_metadata);
-          // self.photo_url = storage_ref.child(image_path).getDownloadUrl().getResult();
-          // self.uploadItem()
     },
     uploadItem: function(auth_token, photo_url) {
+        let self = this;
         axios.post('/items/', qs.stringify({
             'title': self.itemTitle,
             'location': self.location,
@@ -157,19 +154,9 @@ export default {
             }
         })
             .then(response => {
-                alert(response);
+                alert("Successfully Uploaded Item: " + response['data']['title']);
                 //Get back an Item variable. Not sure if the information is needed, but it is not used.
-                self.$router.replace('home');
-
-                // let item = response.data;
-                // self.location = item['location'];
-                // self.itemTitle = item['title'];
-                // self.tags = item['tags'];
-                // //NOT SURE EXACTLY WHAT IS THE USE OF NEWTAG. Maybe need to edit bc of it?
-                // self.itemImage = item['photo_url'];
-                // self.description = item['description'];
-
-                // self.owner_uid = item['owner_uid'];
+                // self.$router.replace('home');
             })
             .catch(error => {
                 let errorCode = error.code;
