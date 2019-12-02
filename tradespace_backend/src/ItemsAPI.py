@@ -109,3 +109,17 @@ def get_items():
     result[item.id] = item_info
 
   return result, 200
+
+@items_api.route('/other_user/<string:user_id>', methods=['GET'])
+@auth.login_required
+def get_other_user_items(user_id):
+  db = firestore.client()
+  items = db.collection(ITEMS_COLLECTION).where("owner_uid", "==", user_id).stream()
+
+  result = {}
+  for item in items:
+    item_info = item.to_dict()
+    item_info['item_id'] = item.id
+    result[item.id] = item_info
+
+  return result, 200

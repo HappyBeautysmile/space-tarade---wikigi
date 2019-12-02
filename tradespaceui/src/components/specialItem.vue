@@ -11,9 +11,8 @@
                             max-width="344"
                             v-on="on"
                     >
-                        <v-img style="float: left" v-bind:src="itemPhoto"></v-img>
                         <v-list-item>
-                            <p id="text"> {{ itemDescription }}</p>
+                            <p id="text"> {{ itemTitle }}</p>
                         </v-list-item>
                     </v-card>
                 </template>
@@ -78,7 +77,8 @@
         name: 'Item',
         //DO PROP VALIDATION IF THERE IS TIME: https://vuejs.org/v2/guide/components-props.html
         props: [
-            'item'
+            'item',
+            'tradeId'
             //Item contains an array with all the different components
         ],
         data: () => ({
@@ -95,7 +95,8 @@
             dialog: false,
             editMode: false,
             notEditMode: true,
-            selected: false
+            selected: false,
+            tradeID: ''
         }),
         methods: {
             select: function () {
@@ -112,6 +113,7 @@
             this.itemLocation = this.item['location'];
             this.itemID = this.item['item_id'];
             this.owner_uid = this.item['owner_uid'];
+            this.tradeID = this.tradeId;
             let self = this;
             if (this.owner_uid !== null || this.owner_uid !== '') {
                 axios.get('/users/' + self.owner_uid, {
@@ -123,26 +125,14 @@
                     .then(response => {
                         let user = response.data;
                         self.name = user['display_name'];
-                        self.profilePhoto = user['photo_url'];
-
-                        if (self.profilePhoto) {
-                            self.photo_path = self.profilePhoto.split('appspot.com/')[1];
-                            var storage = firebase.storage();
-                            var storageRef = storage.ref();
-                            storageRef.child(self.photo_path).getDownloadURL().then(function (url) {
-                                self.profile_photo = url;
-                            });
-                        }
                     });
 
-                if (self.itemPhoto) {
                     self.photo_path = self.itemPhoto.split('appspot.com/')[1];
                     var storage = firebase.storage();
                     var storageRef = storage.ref();
                     storageRef.child(self.photo_path).getDownloadURL().then(function (url) {
-                        self.item_photo = url;
+                        self.itemPhoto = url;
                     });
-                }
             }
         }
 

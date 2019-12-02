@@ -105,7 +105,7 @@
                     let errorMessage = error.message;
                     alert("ERROR " + errorCode + ":" + errorMessage);
                 });
-        },
+        }
     };
 </script>
 

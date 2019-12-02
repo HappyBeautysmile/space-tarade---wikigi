@@ -15,7 +15,7 @@
     >
       <b-row>
         <v-card-title style="padding-left:5%;">
-          <div style="white-space:nowrap">Trade with {{ transaction.other_person.display_name }}</div>
+          <div style="white-space:nowrap">Trade with {{ transaction.other_user.display_name }}</div>
         </v-card-title>
         <b-button
           v-if="transaction.status == 0 || transaction.status == 1"
@@ -28,18 +28,24 @@
           style="display: flex; flex-direction: column; align-items: center; flex: 1 1 auto; max-width: 26%"
         >
           <img
-            :src="transaction.other_person.photo_url"
+            v-if="transaction.other_user.photo_url != null"
+            :src="transaction.other_user.photo_url"
+            style="width: 70%; height: auto; position:relative; border-radius:50%"
+          />
+          <img
+            v-else
+            src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/google/80/black-question-mark-ornament_2753.png"
             style="width: 70%; height: auto; position:relative; border-radius:50%"
           />
           <b-card-body style="text-align: center;">
             <v-list-item-title>
               {{
-              transaction.other_person.phone
+              transaction.other_user.phone_number
               }}
             </v-list-item-title>
             <v-list-item-title>
               {{
-              transaction.other_person.email
+              transaction.other_user.email
               }}
             </v-list-item-title>
           </b-card-body>
@@ -55,10 +61,12 @@
                   align-items: center;
                   "
             >
-              <b-img contain color="grey" :src="transaction.your_item_photo" class="imageCard"></b-img>
+              <b-img v-if="transaction.your_item != null" contain color="grey" :src="transaction.your_item.photo_url" class="imageCard"></b-img>
+              <b-img v-else contain color="grey" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/google/80/black-question-mark-ornament_2753.png" class="imageCard"></b-img>
               <b-card-body>
                 <v-list-item-title style="text-align: center">
-                  <div style="white-space:normal;">{{ transaction.your_item_name }}</div>
+                  <div v-if="transaction.your_item != null" style="white-space:normal;">{{ transaction.your_item.title }}</div>
+                  <div v-else style="white-space:normal;"> N/A </div>
                 </v-list-item-title>
               </b-card-body>
             </div>
@@ -75,10 +83,12 @@
                   align-items: center;
                   "
             >
-              <b-img contain color="grey" :src="transaction.their_item_photo" class="imageCard"></b-img>
+              <b-img v-if="transaction.their_item != null" contain color="grey" :src="transaction.their_item.photo_url" class="imageCard"></b-img>
+              <b-img v-else contain color="grey" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/google/80/black-question-mark-ornament_2753.png" class="imageCard"></b-img>
               <b-card-body>
-                <v-list-item-title style="text-align: center; ">
-                  <div style="white-space:normal;">{{ transaction.their_item_name }}</div>
+                <v-list-item-title style="text-align: center">
+                  <div v-if="transaction.their_item != null" style="white-space:normal;">{{ transaction.their_item.title }}</div>
+                  <div v-else style="white-space:normal;"> N/A </div>
                 </v-list-item-title>
               </b-card-body>
             </div>
@@ -96,8 +106,8 @@
               <v-list-item-title v-else>Error</v-list-item-title>
             </div>
 
-            <b-button class="pushDown" v-if="transaction.status == 1">Choose Outta Buyer's Shit</b-button>
-            <b-button class="pushDown" v-else-if="transaction.status == 2">Complete</b-button>
+            <b-button class="pushDown" v-if="transaction.status == 1" @click="$router.push({path: `/sellerItemSelect/${transaction.trade_id}`})">Select an Item from Other User</b-button>
+            <b-button class="pushDown" v-else-if="transaction.status == 2">Mark Trade as Complete</b-button>
           </b-card-body>
         </b-col>
       </b-row>
@@ -106,100 +116,69 @@
 </template>
 
 <script>
+
+import firebase from 'firebase';
+import axios from 'axios';
+
 export default {
   name: "MyTrades",
   components: {},
   data: () => ({
-    trade_list: [
-      {
-        trade_id: "123456",
-        other_person: {
-          display_name: "nikita",
-          phone: "123-456-7890",
-          email: "nikita@gmail.com",
-          photo_url:
-            "https://cdn.shopify.com/s/files/1/0217/3274/products/pau3053_106_h_large.jpg?v=1543863314"
-        },
-        your_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ebayimg.com%2Fimages%2Fi%2F182533075915-0-1%2Fs-l1000.jpg&f=1&nofb=1",
-        your_item_name: "Banana Republic Shirt",
-        their_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ebayimg.com%2Fimages%2Fi%2F271404119956-0-1%2Fs-l1000.jpg&f=1&nofb=1",
-        their_item_name: "Abercrombie New Fashionable Shirt",
-        status: 0
-      },
-      {
-        trade_id: "123456",
-        other_person: {
-          display_name: "nikita",
-          phone: "123-456-7890",
-          email: "nikita@gmail.com",
-          photo_url:
-            "https://cdn.shopify.com/s/files/1/0217/3274/products/pau3053_106_h_large.jpg?v=1543863314"
-        },
-        your_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Jyd_y8Av2QwWhbkDrFb_6gHaHa%26pid%3DApi&f=1",
-        your_item_name: "Banana Republic Shirt",
-        their_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ebayimg.com%2Fimages%2Fi%2F271404119956-0-1%2Fs-l1000.jpg&f=1&nofb=1",
-        their_item_name: "Abercrombie New Fashionable Shirt",
-        status: 1
-      },
-      {
-        trade_id: "123456",
-        other_person: {
-          display_name: "nikita",
-          phone: "123-456-7890",
-          email: "nikita@gmail.com",
-          photo_url:
-            "https://cdn.shopify.com/s/files/1/0217/3274/products/pau3053_106_h_large.jpg?v=1543863314"
-        },
-        your_item_photo:
-          "https://cdn.shopify.com/s/files/1/0217/3274/products/pau3053_106_h_large.jpg?v=1543863314",
-        your_item_name: "Banana Republic Shirt",
-        their_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ebayimg.com%2Fimages%2Fi%2F271404119956-0-1%2Fs-l1000.jpg&f=1&nofb=1",
-        their_item_name:
-          "Abercrombie New Fashionable Shirt xxxxxxxxxxxxxxxxx xxxxxxxxxxxxx xxxxxxxxxxxxxx xxxxxx",
-        status: 2
-      },
-      {
-        trade_id: "123456",
-        other_person: {
-          display_name: "nikita",
-          phone: "123-456-7890",
-          email: "nikita@gmail.com",
-          photo_url:
-            "https://cdn.shopify.com/s/files/1/0217/3274/products/pau3053_106_h_large.jpg?v=1543863314"
-        },
-        your_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ebayimg.com%2Fimages%2Fi%2F182533075915-0-1%2Fs-l1000.jpg&f=1&nofb=1",
-        your_item_name: "Banana Republic Shirt",
-        their_item_photo:
-          "https://cdn.shopify.com/s/files/1/0128/9452/products/Puffer-Jacket-FIBL09_959f4782-35d5-40e2-95c9-881682dd440d_1024x1024.png?v=1542326918",
-        their_item_name: "Nice Jacket",
-        status: 3
-      },
-      {
-        trade_id: "123456",
-        other_person: {
-          display_name: "nikita",
-          phone: "123-456-7890",
-          email: "nikita@gmail.com",
-          photo_url:
-            "https://cdn.shopify.com/s/files/1/0217/3274/products/pau3053_106_h_large.jpg?v=1543863314"
-        },
-        your_item_photo:
-          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ebayimg.com%2Fimages%2Fi%2F182533075915-0-1%2Fs-l1000.jpg&f=1&nofb=1",
-        your_item_name: "Banana Republic Shirt",
-        their_item_photo:
-          "https://cdn.shopify.com/s/files/1/0128/9452/products/Puffer-Jacket-FIBL09_959f4782-35d5-40e2-95c9-881682dd440d_1024x1024.png?v=1542326918",
-        their_item_name: "Nice Jacket",
-        status: 4
+    trade_list: []
+  }),
+  methods: {
+    updateUserProfile: function(trade) {
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+
+        if (trade.other_user.photo_url) {
+          let photo_path = trade.other_user.photo_url.split('appspot.com/')[1];
+          storageRef.child(photo_path).getDownloadURL().then(function(url) {
+            trade.other_user.photo_url = url;
+          });
+        }
+
+        if (trade.their_item) {
+          if (trade.their_item.photo_url != "") {
+            let photo_path = trade.their_item.photo_url.split('appspot.com/')[1];
+            storageRef.child(photo_path).getDownloadURL().then(function(url) {
+              trade.their_item.photo_url = url;
+            });
+          }
+        }
+
+        if (trade.your_item) {
+          if (trade.your_item.photo_url != "") {
+            let photo_path = trade.your_item.photo_url.split('appspot.com/')[1];
+            storageRef.child(photo_path).getDownloadURL().then(function(url) {
+              trade.your_item.photo_url = url;
+            });
+          }
+        }
+    }
+  },
+  created() {
+    let self = this;
+    axios.get('/trades/', {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'token ' + self.$store.getters.authToken
       }
-    ],
-    user_id: "nikita12345"
-  })
+    })
+      .then(response => {
+        let responseData = response.data;
+        self.trade_list = responseData['trades'];
+        var index;
+        for (index = 0; index < self.trade_list.length; index++) { 
+          self.updateUserProfile(self.trade_list[index]);
+        } 
+      })
+      .catch(error => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        alert("ERROR " + errorCode + ":" + errorMessage);
+      });
+  }
 };
 </script>
 

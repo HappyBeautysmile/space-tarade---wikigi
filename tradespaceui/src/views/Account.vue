@@ -33,7 +33,7 @@ export default {
   data: () => ({
     settings: [
       { name: "My Items", dest: "history" },
-      { name: "My Trades", dest: "mytrades" },
+      { name: "My Trades", dest: "trades" },
       { name: "My Account", dest: "update" }
     ],
     display_name: "",
