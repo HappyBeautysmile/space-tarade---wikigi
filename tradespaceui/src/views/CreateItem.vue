@@ -140,15 +140,18 @@ export default {
     },
     uploadItem: function(auth_token, photo_url) {
         let self = this;
+
+        var tags_arr = [];
         var i;
         for (i = 0; i < self.tags.length; i++) {
-          alert(self.tags[i].name);
+          tags_arr.push(self.tags[i].name);
         }
+
         axios.post('/items/', qs.stringify({
             'title': self.itemTitle,
             'location': self.location,
             'description': self.description,
-            'tags': self.tags,
+            'tags': tags_arr,
             'photo_url': photo_url
         }), {
             headers: {
@@ -169,11 +172,6 @@ export default {
             });
     }
   }
-
-
-
-
-
 };
 </script>
 
