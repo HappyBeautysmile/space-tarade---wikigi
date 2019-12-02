@@ -53,7 +53,9 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary">Start Trade</v-btn>
+                        <v-btn text color="primary" v-if="notEditMode">Start Trade</v-btn>
+
+                        <v-btn text color="primary" v-if="editMode">Edit Item</v-btn>
                         <v-btn
                                 color="primary"
                                 text
@@ -85,9 +87,13 @@
             itemTags: '',
             itemLocation: '',
             owner_uid: '',
+            itemID: '',
+            itemOwnerID: '',
             name: '',
             profile: '',
             dialog: false,
+            editMode: false,
+            notEditMode: true
         }),
         methods: {
             toItem: function () {
@@ -100,6 +106,7 @@
             this.itemPhoto = this.item['photo_url'];
             this.itemTags = this.item['tags'];
             this.itemLocation = this.item['location'];
+            this.itemID = this.item['item_id'];
             this.owner_uid = this.item['owner_uid'];
             let self = this;
             if (this.owner_uid !== null || this.owner_uid !== '') {
@@ -114,6 +121,31 @@
                         self.name = user['display_name'];
                         self.profile = user['photo_url'];
                     })
+                
+
+                axios.get('/users/', {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'token ' + self.$store.getters.authToken
+                    }
+                })
+                    .then(response => {
+                        let userInfo = response.data;
+                        self.curUserID = userInfo['user_id'];
+                        if(self.curUserID == self.owner_uid) {
+                            self.editMode = true;
+                        }
+                        else {
+                            alert(self.curUserID);
+                            alert(self.itemUserID);
+                        }
+                        self.notEditMode = !(self.editMode);
+                    })
+                    .catch(error => {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        alert("ERROR " + errorCode + ":" + errorMessage);
+                    });
             }
 
             // .catch(error => {
