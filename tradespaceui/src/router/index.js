@@ -22,7 +22,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+        import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
     path: "/search",
@@ -34,7 +34,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Search.vue")
+        import(/* webpackChunkName: "about" */ "../views/Search.vue")
   },
   {
     path: "/item/12345uniqueID",
@@ -97,12 +97,20 @@ const routes = [
   },
 
   {
-    path: "/trades",
-    name: "trades",
+    path: "/mytrades",
+    name: "mytrades",
     // meta: {
     //   requiresAuth: true
     // },
-    component: () => import("../views/Trades.vue")
+    component: () => import("../views/MyTrades.vue")
+  },
+  {
+    path: "/starttrade",
+    name: "starttrade",
+    // meta: {
+    //   requiresAuth: true
+    // },
+    component: () => import("../views/StartTrade.vue")
   }
 ];
 

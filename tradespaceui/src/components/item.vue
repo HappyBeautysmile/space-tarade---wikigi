@@ -17,7 +17,7 @@
                             </v-list-item-avatar>
                             <v-list-item-title class="headline" style="float: top">{{itemTitle}}</v-list-item-title>
                             <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
-                            <v-img style="float: left" v-bind:src="item_photo"></v-img>
+                            <v-img style="float: left" v-bind:src="itemPhoto"></v-img>
                         </v-card-subtitle>
                         <v-list-item>
                             <p id="text"> {{ itemDescription }}</p>
@@ -49,12 +49,12 @@
 
                     <v-card-text style="padding: 1% 5% 1% 5%">
                         <v-row>
-                        <v-col>
-                        <b-card-img v-bind:src="item_photo" class="rounded-0" style="width:350px; height:350px"></b-card-img>
-                        </v-col>
-                        <v-col>
-                        {{itemDescription}}
-                        </v-col>
+                            <v-col>
+                                <b-card-img v-bind:src="itemPhoto" class="rounded-0" style="width:350px; height:350px"></b-card-img>
+                            </v-col>
+                            <v-col>
+                                {{itemDescription}}
+                            </v-col>
                         </v-row>
                     </v-card-text>
 
@@ -83,7 +83,6 @@
 
     import firebase from 'firebase';
     import axios from 'axios';
-    import qs from 'querystring';
 
     export default {
         name: 'Item',
@@ -109,26 +108,8 @@
         }),
         methods: {
             startTrade: function () {
-                let self = this;
-
-                axios.post('/trades/request_new', qs.stringify({
-                    'item_id': self.itemID
-                }), {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Authorization': 'token ' + self.$store.getters.authToken
-                    }
-                })
-                    .then(response => {
-                        self.dummy_data = response;
-                        self.$router.push({path: '/trades'})
-                    })
-                    .catch(error => {
-                        let errorCode = error.code;
-                        let errorMessage = error.message;
-                        self.snackbar = true;
-                        self.text = "ERROR " + errorCode + ":" + errorMessage;
-                    });
+                this.$store.commit('startTrade', this.itemID);
+                this.$router.push('/starttrade');
             }
         },
         created() {
@@ -170,7 +151,8 @@
                         self.item_photo = url;
                     });
                 }
-                
+
+                /*
                 axios.get('/users/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -194,7 +176,7 @@
                         let errorMessage = error.message;
                         alert("ERROR " + errorCode + ":" + errorMessage);
                     });
-                
+                */
             }
 
             // .catch(error => {
