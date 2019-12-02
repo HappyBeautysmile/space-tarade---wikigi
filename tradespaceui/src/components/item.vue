@@ -12,12 +12,12 @@
                             v-on="on"
                     >
                         <v-card-subtitle style="display: block">
-                            <v-list-item-avatar color="grey" style="float: left">
-                                <v-img :src="profile"></v-img>
+                            <v-list-item-avatar color="grey" style="float: left" size="70px">
+                                <v-img v-bind:src="profile_photo"></v-img>
                             </v-list-item-avatar>
                             <v-list-item-title class="headline" style="float: top">{{itemTitle}}</v-list-item-title>
                             <v-list-item-subtitle>by {{name}}</v-list-item-subtitle>
-                            <v-img style="float: left" :src="itemPhoto"></v-img>
+                            <v-img style="float: left" v-bind:src="item_photo"></v-img>
                         </v-card-subtitle>
                         <v-list-item>
                             <p id="text"> {{ itemDescription }}</p>
@@ -30,23 +30,32 @@
                             class="headline grey lighten-2"
                             primary-title
                             style="display: block"
-                    ><span>
-                        <v-list-item-avatar color="grey" style="display: inline-block">
-                            <v-img :src="profile" style="margin: 0; padding: 0"></v-img>
-                        </v-list-item-avatar>
-                        </span>
-                        <v-list-item-title style="display: inline-block; font-size: 40px; margin-top: 15px">
-                            {{itemTitle}}
-                        </v-list-item-title>
-                        <v-list-item-subtitle style="margin-left: 20px"> by {{name}}
-                        </v-list-item-subtitle>
-                        <v-list-item-subtitle style="display: inline-block; margin-left: 10px">in {{itemLocation}}
-                        </v-list-item-subtitle>
+                    >
+                        <v-row>
+                            <v-list-item-avatar color="grey" style="display: inline-block" size="150px">
+                                <v-img v-bind:src="profile_photo" style="margin: 0; padding: 0"></v-img>
+                            </v-list-item-avatar>
+                            <v-col>
+                                <v-list-item-title style="display: inline-block; font-size: 40px; margin-top:20px; margin-left: 10px">
+                                    {{itemTitle}}
+                                </v-list-item-title>
+                                <v-list-item-subtitle style="margin-left: 15px"> by {{name}}
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle style="display: inline-block; margin-left: 15px">in {{itemLocation}}
+                                </v-list-item-subtitle>
+                            </v-col>
+                        </v-row>
                     </v-card-title>
 
-                    <v-card-text style="padding: 10% 5% 5% 5%">
-                        <b-card-img :src="itemPhoto" class="rounded-0"></b-card-img>
+                    <v-card-text style="padding: 1% 5% 1% 5%">
+                        <v-row>
+                        <v-col>
+                        <b-card-img v-bind:src="item_photo" class="rounded-0" style="width:350px; height:350px"></b-card-img>
+                        </v-col>
+                        <v-col>
                         {{itemDescription}}
+                        </v-col>
+                        </v-row>
                     </v-card-text>
 
                     <v-divider></v-divider>
@@ -71,6 +80,8 @@
 </template>
 
 <script>
+
+    import firebase from 'firebase';
     import axios from 'axios';
 
     export default {
@@ -90,7 +101,7 @@
             itemID: '',
             itemOwnerID: '',
             name: '',
-            profile: '',
+            profilePhoto: '',
             dialog: false,
             editMode: false,
             notEditMode: true
@@ -119,10 +130,28 @@
                     .then(response => {
                         let user = response.data;
                         self.name = user['display_name'];
-                        self.profile = user['photo_url'];
-                    })
-                
+                        self.profilePhoto = user['photo_url'];
 
+                        if (self.profilePhoto) {
+                            self.photo_path = self.profilePhoto.split('appspot.com/')[1];
+                            var storage = firebase.storage();
+                            var storageRef = storage.ref();
+                            storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
+                                self.profile_photo = url;
+                            });
+                        }
+                    });
+                
+                if (self.itemPhoto) {
+                    self.photo_path = self.itemPhoto.split('appspot.com/')[1];
+                    var storage = firebase.storage();
+                    var storageRef = storage.ref();
+                    storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
+                        self.item_photo = url;
+                    });
+                }
+
+                /*
                 axios.get('/users/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -146,6 +175,7 @@
                         let errorMessage = error.message;
                         alert("ERROR " + errorCode + ":" + errorMessage);
                     });
+                */
             }
 
             // .catch(error => {

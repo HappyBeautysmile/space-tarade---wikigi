@@ -2,7 +2,7 @@
   <b-container fluid style="padding: 80px 40px 0 40px">
     <div style="padding-bottom: 30px">
       <div class="mt-3">
-        Clothing Images: {{ itemImage ? itemImage.name : "" }}
+        Item Image: {{ itemImage ? itemImage.name : "" }}
       </div>
       <br />
       <b-form-file
@@ -52,7 +52,7 @@
       <b-form-textarea
         id="textarea"
         v-model="description"
-        placeholder="Describe your lit af clothings..."
+        placeholder="Describe your item..."
         rows="3"
         max-rows="6"
       ></b-form-textarea>
