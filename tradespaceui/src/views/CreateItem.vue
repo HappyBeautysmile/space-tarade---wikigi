@@ -140,6 +140,10 @@ export default {
     },
     uploadItem: function(auth_token, photo_url) {
         let self = this;
+        var i;
+        for (i = 0; i < self.tags.length; i++) {
+          alert(self.tags[i].name);
+        }
         axios.post('/items/', qs.stringify({
             'title': self.itemTitle,
             'location': self.location,
