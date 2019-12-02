@@ -9,7 +9,7 @@ from firebase_admin import credentials
 from src.TokenAuthentication import auth
 
 # ENTER YOUR FULL LOCAL PATH to the json file here ("/Users/.../tradespace_firebase_admin_key.json") & DON'T COMMIT THE NEXT LINE
-cred = credentials.Certificate("/Users/HirdayGupta/Documents/UCLA/Fall_19/CS130/TradeSpace/tradespace_backend/instance/tradespace_firebase_admin_key.json")
+cred = credentials.Certificate("/mnt/c/Users/Nikita/Documents/projects/TradeSpace/tradespace_backend/instance/tradespace_firebase_admin_key.json")
 firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
