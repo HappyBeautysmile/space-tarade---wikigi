@@ -97,12 +97,12 @@ const routes = [
   },
 
   {
-    path: "/mytrades",
-    name: "mytrades",
+    path: "/trades",
+    name: "trades",
     // meta: {
     //   requiresAuth: true
     // },
-    component: () => import("../views/MyTrades.vue")
+    component: () => import("../views/Trades.vue")
   }
 ];
 

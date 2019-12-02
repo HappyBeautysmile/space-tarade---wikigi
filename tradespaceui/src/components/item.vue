@@ -62,7 +62,7 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" v-if="notEditMode" @click="$router.push('/mytrades')">Start Trade</v-btn>
+                        <v-btn text color="primary" v-if="notEditMode" @click="startTrade">Start Trade</v-btn>
 
                         <v-btn text color="primary" v-if="editMode" @click="$router.push({path: `/editItem/${itemID}`})">Edit Item</v-btn>
                         <v-btn
@@ -83,6 +83,7 @@
 
     import firebase from 'firebase';
     import axios from 'axios';
+    import qs from 'querystring';
 
     export default {
         name: 'Item',
@@ -107,8 +108,27 @@
             notEditMode: true
         }),
         methods: {
-            toItem: function () {
+            startTrade: function () {
+                let self = this;
 
+                axios.post('/trades/request_new', qs.stringify({
+                    'item_id': self.itemID
+                }), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'token ' + self.$store.getters.authToken
+                    }
+                })
+                    .then(response => {
+                        self.dummy_data = response;
+                        self.$router.push({path: '/trades'})
+                    })
+                    .catch(error => {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
+                    });
             }
         },
         created() {

@@ -20,6 +20,7 @@ def search(search_text):
   matched_items = {}
   for item in items:
     item_dict = item.to_dict()
+    item_dict['item_id'] = item.id
     title_ratio = fuzz.ratio(search_str, item_dict['title'])
     desc_ratio = fuzz.ratio(search_str, item_dict['description'])
     tag_ratios = []
@@ -38,7 +39,6 @@ def search(search_text):
   matched_items_list = []
   for i in sorted(matched_items, reverse=True):
     matched_items_list += matched_items[i]
-  print(matched_items_list)
   if len(matched_items_list) < 1:
     matched_items_list = []
   #easear to return json, plus the empty list case
