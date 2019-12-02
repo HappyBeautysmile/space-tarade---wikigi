@@ -58,12 +58,14 @@ export default {
             self.email = userInfo['email'];
             self.photo_url = userInfo['photo_url'];
 
-            self.photo_path = self.photo_url.split('appspot.com/')[1];
-            var storage = firebase.storage();
-            var storageRef = storage.ref();
-            storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
-                self.profile_photo = url;
-            });
+            if (self.photo_url) {
+              self.photo_path = self.photo_url.split('appspot.com/')[1];
+              var storage = firebase.storage();
+              var storageRef = storage.ref();
+              storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
+                  self.profile_photo = url;
+              });
+            }
         })
         .catch(error => {
             let errorCode = error.code;
