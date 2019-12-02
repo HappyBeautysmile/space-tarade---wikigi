@@ -283,7 +283,7 @@ def get_trades():
         buyer_trade_docs = trades_collection.where('buyer_id', '==', g.uid).stream()
         seller_trade_docs = trades_collection.where('seller_id', '==', g.uid).stream()
     except:
-        return {'error': 'could not update trade status, try again later'}, 500
+        return {'error': 'could not get trades for given user, try again later'}, 500
 
     all_trade_docs = chain(buyer_trade_docs, seller_trade_docs)
 
