@@ -287,10 +287,10 @@ def get_trades():
 
     all_trade_docs = chain(buyer_trade_docs, seller_trade_docs)
 
-    all_trades = {}
+    all_trades = []
     for trade_doc in all_trade_docs:
         trade_dict = trade_doc.to_dict()
         trade_obj = Trade.from_dict(trade_dict)
-        all_trades[trade_doc.id] = trade_obj.render(g.uid)
+        all_trades.append(trade_obj.render(g.uid))
 
-    return all_trades
+    return {'trades': all_trades}, 200
