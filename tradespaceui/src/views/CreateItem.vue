@@ -155,7 +155,7 @@ export default {
             .then(response => {
                 alert("Successfully Uploaded Item: " + response['data']['title']);
                 //Get back an Item variable. Not sure if the information is needed, but it is not used.
-                // self.$router.replace('home');
+                self.$router.replace('home');
             })
             .catch(error => {
                 let errorCode = error.code;
