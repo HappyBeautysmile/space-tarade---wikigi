@@ -109,7 +109,7 @@
         methods: {
             startTrade: function () {
                 this.$store.commit('startTrade', this.itemID);
-                this.$router.push('/starttrade');
+                this.$router.replace('starttrade');
             }
         },
         created() {

@@ -96,14 +96,14 @@ const routes = [
     component: () => import("../views/History.vue")
   },
 
-  {
-    path: "/mytrades",
-    name: "mytrades",
-    // meta: {
-    //   requiresAuth: true
-    // },
-    component: () => import("../views/MyTrades.vue")
-  },
+  // {
+  //   path: "/mytrades",
+  //   name: "mytrades",
+  //   // meta: {
+  //   //   requiresAuth: true
+  //   // },
+  //   component: () => import("../views/MyTrades.vue")
+  // },
   {
     path: "/starttrade",
     name: "starttrade",
