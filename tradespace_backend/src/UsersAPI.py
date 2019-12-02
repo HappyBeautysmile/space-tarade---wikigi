@@ -20,7 +20,7 @@ def get_user_with_id(user_id):
   try:
     user = firebase_auth.get_user(user_id)
     user_data = jsonify(user_id=user_id, display_name=user.display_name, email=user.email, phone_number=user.phone_number, photo_url=user.photo_url)
-    return user_data
+    return user_data, 200
   except firebase_auth_utils.UserNotFoundError:
     return {'error': 'user id not found'}, 400
 
