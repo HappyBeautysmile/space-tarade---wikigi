@@ -34,8 +34,6 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-            chmod +x gen_firebase_keys_from_envvar.sh
-            ./gen_firebase_keys_from_envvar.sh > instance/tradespace_firebase_admin_key.json
 
       - save_cache:
           paths:
@@ -49,9 +47,12 @@ jobs:
       # https://nose.readthedocs.io
       - run:
           name: run tests
+          context: backend_secrets
           command: |
             cd tradespace_backend
             . venv/bin/activate
+            chmod +x gen_firebase_keys_from_envvar.sh
+            ./gen_firebase_keys_from_envvar.sh > instance/tradespace_firebase_admin_key.json
             pytest
 
       - store_artifacts:
