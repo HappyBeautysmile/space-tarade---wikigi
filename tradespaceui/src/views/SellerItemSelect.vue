@@ -81,8 +81,28 @@
             text1: ''
         }),
         methods: {
-            makeOffer: function () {
-                //alert('Item: '+ this.itemID + 'on cash: ' + this.myCash + 'and item id ' + this.$store.getters.selected);
+            makeOffer: function() {
+                let self = this;
+                if (self.myCash != 0) {
+                    if (self.$store.getters.selected == '') {
+                        self.makeMoneyOffer();
+                    }
+                    else {
+                        self.makeBarterAndMoneyOffer();
+                    }
+                }
+                else {
+                    if (self.$store.getters.selected == '') {
+                        alert('No proposed offer selected for trade. Rerouting to trades page...');
+                        self.$router.replace('/trades');
+                    }
+                    else {
+                        self.makeBarterOffer();
+                    }
+                }
+            },
+
+            makeBarterOffer: function () {
 
                 let self = this;
                 let path = '/trades/' + self.tradeID + '/barter';
@@ -90,6 +110,56 @@
                 let tok = self.$store.getters.authToken;
                 axios.put(path, qs.stringify({
                     'buyer_item': val
+                }), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'token ' + tok
+                    }
+                })
+                    .then(response => {
+                        self.text1 = response;
+                        self.$router.replace('/trades');
+                    })
+                    .catch(error => {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        alert("ERROR " + errorCode + ":" + errorMessage);
+                    });
+            },
+
+            makeMoneyOffer: function () {
+
+                let self = this;
+                let path = '/trades/' + self.tradeID + '/money';
+                let tok = self.$store.getters.authToken;
+                axios.put(path, qs.stringify({
+                    'buyer_price': self.myCash
+                }), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'token ' + tok
+                    }
+                })
+                    .then(response => {
+                        self.text1 = response;
+                        self.$router.replace('/trades');
+                    })
+                    .catch(error => {
+                        let errorCode = error.code;
+                        let errorMessage = error.message;
+                        alert("ERROR " + errorCode + ":" + errorMessage);
+                    });
+            },
+
+            makeBarterAndMoneyOffer: function () {
+
+                let self = this;
+                let path = '/trades/' + self.tradeID + '/barter_and_money';
+                let val = self.$store.getters.selected;
+                let tok = self.$store.getters.authToken;
+                axios.put(path, qs.stringify({
+                    'buyer_item': val,
+                    'buyer_price': self.myCash
                 }), {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
