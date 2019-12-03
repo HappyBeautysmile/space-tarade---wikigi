@@ -255,7 +255,7 @@ def remove_trade(trade_id):
     # ensure trade's status is valid for this method
     trade_dict = response
     trade_obj = Trade.from_dict(trade_dict)
-    if (trade_obj.compute_status(g.uid) != 2):
+    if (trade_obj.compute_status(g.uid) != 0 and trade_obj.compute_status(g.uid) != 1):
         return {'error': "this trade is not ready to be cancelled."}, 400
 
     # ensure user is either buyer or seller for this trade
