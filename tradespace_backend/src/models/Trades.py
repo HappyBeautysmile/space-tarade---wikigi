@@ -2,13 +2,13 @@ from src.UsersAPI import get_user_with_id
 from src.ItemsAPI import get_item
 
 class Trade:
-    def __init__(self, id, buyer_id, seller_id, seller_item):
+    def __init__(self, id, buyer_id, seller_id, seller_item, status=None):
         self.buyer_id = buyer_id
         self.seller_id = seller_id
         self.seller_item = seller_item
         self.id = id
         self.type = None
-        self.status = "PENDING"
+        self.status = status if status is not None else "PENDING"
 
     @staticmethod
     def from_dict(source):
@@ -18,7 +18,8 @@ class Trade:
             buyer_id = source.get('buyer_id')
             seller_id = source.get('seller_id')
             seller_item = source.get('seller_item')
-            return Trade(id, buyer_id, seller_id, seller_item)
+            status = source.get("status")
+            return Trade(id, buyer_id, seller_id, seller_item,status)
         elif type == "BARTER":
             return BarterTrade.from_dict(source)
         elif type == "MONEY":
@@ -102,8 +103,8 @@ class Trade:
 
 
 class BarterTrade(Trade):
-    def __init__(self, id, buyer_id, seller_id, seller_item, buyer_item):
-        super().__init__(id, buyer_id, seller_id, seller_item)
+    def __init__(self, id, buyer_id, seller_id, seller_item, buyer_item, status):
+        super().__init__(id, buyer_id, seller_id, seller_item, status)
         self.buyer_item = buyer_item
         self.type = "BARTER"
 
@@ -115,7 +116,8 @@ class BarterTrade(Trade):
         type = source.get('type')
         seller_item = source.get('seller_item')
         buyer_item = source.get('buyer_item')
-        return BarterTrade(id, buyer_id, seller_id, seller_item, buyer_item)
+        status = source.get("status")
+        return BarterTrade(id, buyer_id, seller_id, seller_item, buyer_item, status)
 
     def to_dict(self):
         dict_ = super().to_dict()
@@ -142,8 +144,8 @@ class BarterTrade(Trade):
 
 
 class MoneyTrade(Trade):
-    def __init__(self, id, buyer_id, seller_id, seller_item, buyer_price):
-        super().__init__(id, buyer_id, seller_id, seller_item)
+    def __init__(self, id, buyer_id, seller_id, seller_item, buyer_price, status):
+        super().__init__(id, buyer_id, seller_id, seller_item, status)
         self.buyer_price = buyer_price
         self.type = "MONEY"
 
@@ -155,7 +157,8 @@ class MoneyTrade(Trade):
         type = source.get('type')
         seller_item = source.get('seller_item')
         buyer_price = source.get('buyer_price')
-        return MoneyTrade(id, buyer_id, seller_id, seller_item, buyer_price)
+        status = source.get("status")
+        return MoneyTrade(id, buyer_id, seller_id, seller_item, buyer_price, status)
 
     def to_dict(self):
         dict_ = super().to_dict()
@@ -175,8 +178,8 @@ class MoneyTrade(Trade):
         return True
 
 class BarterAndMoneyTrade(Trade):
-    def __init__(self, id, buyer_id, seller_id, seller_item, buyer_item, buyer_price):
-        super().__init__(id, buyer_id, seller_id, seller_item)
+    def __init__(self, id, buyer_id, seller_id, seller_item, buyer_item, buyer_price, status):
+        super().__init__(id, buyer_id, seller_id, seller_item, status)
         self.buyer_item = buyer_item
         self.buyer_price = buyer_price
         self.type = "BARTER_AND_MONEY"
@@ -190,7 +193,8 @@ class BarterAndMoneyTrade(Trade):
         seller_item = source.get('seller_item')
         buyer_price = source.get('buyer_price')
         buyer_item = source.get('buyer_item')
-        return BarterAndMoneyTrade(id, buyer_id, seller_id, seller_item, buyer_price, buyer_item)
+        status = source.get("status")
+        return BarterAndMoneyTrade(id, buyer_id, seller_id, seller_item, buyer_price, buyer_item, status)
 
     def to_dict(self):
         dict_ = super().to_dict()
