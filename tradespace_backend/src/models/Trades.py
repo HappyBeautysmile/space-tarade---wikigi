@@ -190,7 +190,7 @@ class BarterAndMoneyTrade(Trade):
         seller_item = source.get('seller_item')
         buyer_price = source.get('buyer_price')
         buyer_item = source.get('buyer_item')
-        return BarterAndMoneyTrade(id, buyer_id, seller_id, seller_item, buyer_price)
+        return BarterAndMoneyTrade(id, buyer_id, seller_id, seller_item, buyer_price, buyer_item)
 
     def to_dict(self):
         dict_ = super().to_dict()
