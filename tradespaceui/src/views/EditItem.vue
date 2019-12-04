@@ -33,9 +33,19 @@
       <b-form-input
         v-model="newTag"
         v-on:keyup.enter.native="addTag"
-        placeholder="Tags"
+        placeholder="Enter a new tag..."
         style="margin-bottom:15px"
       ></b-form-input>
+
+      <ul>
+        <v-btn
+          v-on:click="removeTag(tag)"
+          style="margin-right:20px"
+          v-for="tag in tags"
+          v-bind:key="tag"
+          >{{ tag }}</v-btn
+        >
+      </ul>
     </div>
 
     <div>
@@ -46,13 +56,11 @@
         rows="3"
         max-rows="6"
       ></b-form-textarea>
-
-      <pre class="mt-3 mb-0">{{ description }}</pre>
     </div>
 
     <div style="padding: 10px">
      
-        <v-btn large color="primary" @click="editItem"> Submit</v-btn>
+        <v-btn large color="primary" @click="editItem">Update Item</v-btn>
  
       <router-link to="/history">
         <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
@@ -103,11 +111,11 @@ export default {
       });
     },
     addTag() {
-      this.tags.push({ name: this.newTag });
+      this.tags.push(this.newTag);
       this.newTag = "";
     },
     removeTag(tagToRemove) {
-      this.tags = this.tags.filter(item => item.name != tagToRemove);
+      this.tags = this.tags.filter(item => item != tagToRemove);
     },
     selectImage: function(file) {
       this.itemImage = file;
@@ -160,17 +168,11 @@ export default {
     uploadItem: function(auth_token, photo_url, photo_changed) {
       let self = this;
 
-      var tags_arr = [];
-      var i;
-      for (i = 0; i < self.tags.length; i++) {
-        tags_arr.push(self.tags[i].name);
-      }
-
         axios.put('/items/' + self.itemID, qs.stringify({
             'title': self.itemTitle,
             'location': self.location,
             'description': self.description,
-            'tags': tags_arr,
+            'tags': self.tags,
             'photo_url': photo_url
         }), {
             headers: {

@@ -33,7 +33,7 @@
       <b-form-input
         v-model="newTag"
         v-on:keyup.enter.native="addTag"
-        placeholder="Tags"
+        placeholder="Enter a new tag..."
         style="margin-bottom:15px"
       ></b-form-input>
 
@@ -56,12 +56,10 @@
         rows="3"
         max-rows="6"
       ></b-form-textarea>
-
-      <pre class="mt-3 mb-0">{{ description }}</pre>
     </div>
 
     <div style="padding: 10px">
-      <v-btn large color="primary" @click="addItem"> Submit</v-btn>
+      <v-btn large color="primary" @click="addItem">Add Item</v-btn>
       <router-link to="/account">
         <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
       </router-link>
@@ -162,7 +160,7 @@ export default {
             .then(response => {
                 alert("Successfully Uploaded Item: " + response['data']['title']);
                 //Get back an Item variable. Not sure if the information is needed, but it is not used.
-                self.$router.replace('home');
+                self.$router.replace('account');
             })
             .catch(error => {
                 let errorCode = error.code;
