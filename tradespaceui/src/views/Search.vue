@@ -5,7 +5,7 @@
                 <form method="get" action="">
                     <div class="tb">
                         <div class="td">
-                            <input type="text" placeholder="Search" required name="search" @input="changed"
+                            <input type="text" placeholder="search..." required name="search" @input="changed"
                                    v-model="searchText">
                         </div>
                         <router-link to="/about">
@@ -18,42 +18,8 @@
                         </router-link>
 
                     </div>
-                    <h1 style="margin: 60px">For example:</h1>
                 </form>
             </div>
-        </b-row>
-        <b-row style="text-align: center; margin: 100px 50px 0 50px">
-            <b-container fluid class="p-4 bg-dark">
-                <b-row>
-                    <b-col>
-                        <router-link to="/about" @click="searchText='shoes'">
-
-                            <h3 style="color: white">Shoes</h3>
-                            <b-img thumbnail fluid
-                                   src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-running-shoes-lead-02-1567016766.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*"
-                                   alt="Image 1"></b-img>
-                        </router-link>
-                    </b-col>
-                    <b-col>
-                        <router-link to="/about" @click="searchText='backpack'">
-
-                            <h3 style="color: white">Backpacks</h3>
-                            <b-img thumbnail fluid
-                                   src="https://i.pinimg.com/originals/36/28/c4/3628c4f11274ea97a8e6172a507fd0a6.jpg"
-                                   alt="Image 1"></b-img>
-                        </router-link>
-                    </b-col>
-                    <b-col>
-                        <router-link to="/about">
-
-                            <h3 style="color: white">Shoes</h3>
-                            <b-img thumbnail fluid
-                                   src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-running-shoes-lead-02-1567016766.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*"
-                                   alt="Image 1"></b-img>
-                        </router-link>
-                    </b-col>
-                </b-row>
-            </b-container>
         </b-row>
     </div>
 </template>

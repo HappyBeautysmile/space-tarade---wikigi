@@ -5,7 +5,7 @@
                 <form method="get" action="">
                     <div class="tb">
                         <div class="td">
-                            <input type="text" placeholder="Search" required name="search" @input="changed"
+                            <input type="text" placeholder="search..." required name="search" @input="changed"
                                    v-model="searchText">
                         </div>
                         <div class="td" id="s-cover" @click="mySearch">
@@ -28,7 +28,7 @@
         <b-row style="padding: 20px 40px 0 40px" v-if="non">
             <b-col cols="1"></b-col>
             <b-col cols="10" style="text-align: center">
-                <h1>Sorry you searched for <p style="font-family: italic">{{searchText}}</p>, but nothing stisfying your search query was found please trying something else like shoes, pc, backpack...</h1>
+                <h1>Sorry, <p style="font-family: italic">{{searchText}}</p> is not currently a valid tag for existing items on Tradespace. Please search for items using another tag. </h1>
             </b-col>
             <b-col cols="1"></b-col>
         </b-row>
