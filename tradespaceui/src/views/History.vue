@@ -1,6 +1,10 @@
 <template>
     <b-container fluid style="padding: 80px 40px 0 40px">
 
+        <h1 class="mytradestitle" style="text-align:center">
+        MY ITEMS
+        </h1>
+
         <b-row style="padding: 20px 40px 0 40px" v-if="safe">
             <li v-for="item in my_items" v-bind:key="item.description" style="list-style-type:none;">
 
