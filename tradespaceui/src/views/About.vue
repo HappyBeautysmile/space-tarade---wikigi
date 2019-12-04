@@ -32,6 +32,22 @@
             </b-col>
             <b-col cols="1"></b-col>
         </b-row>
+
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
+
     </div>
 </template>
 
@@ -51,7 +67,9 @@
             safe: false,
             show: true,
             searchText: "",
-            non: false
+            non: false,
+            text: '',
+            snackbar: false,
         }),
         methods: {
             changed: function () {
@@ -78,7 +96,8 @@
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        alert("ERROR " + errorCode + ":" + errorMessage);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
                     });
             }
         },

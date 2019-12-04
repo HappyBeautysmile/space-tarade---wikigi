@@ -34,6 +34,20 @@
                     </div>
             </b-col>
         </b-row>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </b-card>
 
     </b-container>
@@ -58,7 +72,9 @@
                 curUserID: '',
                 itemUserID: '',
                 editMode: false,
-                notEditMode: true
+                notEditMode: true,
+                text: '',
+                snackbar: false
             }
         },
         methods: {
@@ -67,7 +83,6 @@
             }
         },
         created() {
-            // alert('CHECK')
             let self = this;
             axios.get('/items/' + 'zXyO8kIkustrX3CU8EVt', {
                 headers: {
@@ -76,7 +91,6 @@
                 }
             })
                 .then(response => {
-                    // alert(response)
                     let item = response.data;
                     self.location = item['location'];
                     self.itemTitle = item['title'];
@@ -99,7 +113,8 @@
                         .catch(error => {
                             let errorCode = error.code;
                             let errorMessage = error.message;
-                            alert("ERROR " + errorCode + ":" + errorMessage);
+                            self.snackbar = true;
+                            self.text = "ERROR " + errorCode + ":" + errorMessage;
                         });
                     
                     //BELOW IS GETTING CURRENT USER. IF IT IS THE SAME USER, THEN WE WILL EDIT. 
@@ -116,22 +131,20 @@
                             if(self.curUserID == self.itemUserID) {
                                 self.editMode = true;
                             }
-                            else {
-                                alert(self.curUserID);
-                                alert(self.itemUserID);
-                            }
                             self.notEditMode = !(self.editMode);
                         })
                         .catch(error => {
                             let errorCode = error.code;
                             let errorMessage = error.message;
-                            alert("ERROR " + errorCode + ":" + errorMessage);
+                            self.snackbar = true;
+                            self.text = "ERROR " + errorCode + ":" + errorMessage;
                         });
                     })
                 .catch(error => {
                     let errorCode = error.code;
                     let errorMessage = error.message;
-                    alert("ERROR " + errorCode + ":" + errorMessage);
+                    self.snackbar = true;
+                    self.text = "ERROR " + errorCode + ":" + errorMessage;
                 });
             },
 };

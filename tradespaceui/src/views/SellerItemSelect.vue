@@ -45,6 +45,20 @@
                 </router-link>   
             </b-col>
         </b-row>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </div>
 </template>
 <script>
@@ -78,7 +92,9 @@
             editMode: false,
             notEditMode: true,
             myCash: 0,
-            text1: ''
+            text1: '',
+            text: '',
+            snackbar: false
         }),
         methods: {
             makeOffer: function() {
@@ -93,7 +109,8 @@
                 }
                 else {
                     if (self.$store.getters.selected == '') {
-                        alert('No proposed offer selected for trade. Rerouting to trades page...');
+                        self.snackbar = true;
+                        self.text = 'No proposed offer selected for trade. Rerouting to trades page...';
                         self.$router.replace('/trades');
                     }
                     else {
@@ -123,7 +140,8 @@
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        alert("ERROR " + errorCode + ":" + errorMessage);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ": " + errorMessage;
                     });
             },
 
@@ -147,7 +165,8 @@
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        alert("ERROR " + errorCode + ":" + errorMessage);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ": " + errorMessage;
                     });
             },
 
@@ -173,7 +192,8 @@
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        alert("ERROR " + errorCode + ":" + errorMessage);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ": " + errorMessage;
                     });
             },
 
@@ -194,7 +214,8 @@
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        alert("ERROR " + errorCode + ":" + errorMessage);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ": " + errorMessage;
                     });
             }
         },
@@ -231,7 +252,8 @@
                 .catch(error => {
                     let errorCode = error.code;
                     let errorMessage = error.message;
-                    alert("ERROR " + errorCode + ":" + errorMessage);
+                    self.snackbar = true;
+                    self.text = "ERROR " + errorCode + ": " + errorMessage;
                 });
         }
     };

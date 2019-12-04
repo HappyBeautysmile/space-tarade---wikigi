@@ -70,7 +70,8 @@ export default {
         .catch(error => {
             let errorCode = error.code;
             let errorMessage = error.message;
-            alert("ERROR " + errorCode + ":" + errorMessage);
+            self.snackbar = true;
+            self.text = "ERROR " + errorCode + ": " + errorMessage;
         });
 
   },

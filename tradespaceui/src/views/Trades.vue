@@ -121,7 +121,25 @@
         </b-col>
       </b-row>
     </b-card>
+    
+    <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
+
   </b-container>
+
+  
 </template>
 
 <script>
@@ -135,7 +153,9 @@ export default {
   components: {},
   data: () => ({
     trade_list: [],
-    dummy_text: ''
+    dummy_text: '',
+    text: '',
+    snackbar: false,
   }),
   methods: {
     updateUserProfile: function(trade) {
@@ -181,8 +201,9 @@ export default {
       })
       .then(response => {
         self.dummy_text = response;
-        alert("Successfully Cancelled Trade");
-        setTimeout(function(){ self.$router.replace('/account'); }, 500);
+        self.snackbar = true;
+        self.text = "Successfully Cancelled Trade";
+        setTimeout(function(){ self.$router.replace('/account'); }, 1300);
       })
       .catch(error => {
         let errorCode = error.code;
@@ -205,8 +226,9 @@ export default {
       })
       .then(response => {
         self.dummy_text = response;
-        alert("Successfully Marked Trade as Complete");
-        setTimeout(function(){ self.$router.replace('/account'); }, 500);
+        self.snackbar = true;
+        self.text = "Successfully Marked Trade as Complete";
+        setTimeout(function(){ self.$router.replace('/account'); }, 1300);
       })
       .catch(error => {
         let errorCode = error.code;
@@ -236,7 +258,8 @@ export default {
       .catch(error => {
         let errorCode = error.code;
         let errorMessage = error.message;
-        alert("ERROR " + errorCode + ":" + errorMessage);
+        self.snackbar = true;
+        self.text = "ERROR " + errorCode + ":" + errorMessage;
       });
   }
 };

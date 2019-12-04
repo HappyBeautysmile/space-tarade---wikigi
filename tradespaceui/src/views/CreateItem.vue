@@ -64,6 +64,22 @@
         <v-btn large style="margin-left: 30px" color="secondary"> Cancel </v-btn>
       </router-link>
     </div>
+
+    <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
+
   </b-container>
 </template>
 
@@ -85,7 +101,9 @@ export default {
     newTag: "",
     imageData: null,
     description: "",
-    user_id: ""
+    user_id: "",
+    text: '',
+    snackbar: false,
   }),
 
   methods: {
@@ -133,7 +151,8 @@ export default {
           .catch(error => {
               let errorCode = error.code;
               let errorMessage = error.message;
-              alert("ERROR " + errorCode + ":" + errorMessage);
+              self.snackbar = true;
+              self.text = "ERROR " + errorCode + ":" + errorMessage;
           });
     },
     uploadItem: function(auth_token, photo_url) {
@@ -158,14 +177,15 @@ export default {
             }
         })
             .then(response => {
-                alert("Successfully Uploaded Item: " + response['data']['title']);
+                self.snackbar = true;
+                self.text = "Successfully Uploaded Item: " + response['data']['title'];
                 //Get back an Item variable. Not sure if the information is needed, but it is not used.
                 self.$router.replace('account');
             })
             .catch(error => {
                 let errorCode = error.code;
                 let errorMessage = error.message;
-                alert(errorCode + ":" + errorMessage);
+                self.snackbar = true;
                 self.text = "ERROR " + errorCode + ":" + errorMessage;
             });
     }

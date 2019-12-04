@@ -45,6 +45,20 @@
             </router-link>
         </div>
 
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
 
     </b-container>
 </template>
@@ -62,10 +76,11 @@
         },
         data: () => ({
             my_items: [],
-            safe: false
+            safe: false,
+            text: '',
+            snackbar: false
         }),
         created() {
-            // alert('CHECK')
             let self = this;
             axios.get('/items/', {
                 headers: {
@@ -74,36 +89,17 @@
                 }
             })
                 .then(response => {
-                    //alert(response)
                     //TODO: RESPONSE DATA IS AN ARRAY, ITERATE THROUGH AND GET THE ITEMS IN THAT WAY.
                     let items = response.data;
-                    //alert(items)
-                    //alert(Object.values(items));
 
                     self.my_items = Object.values(items);
                     self.safe = true;
-                    //self.items = response.data;
-
-                    // for(var key in items) {
-                    //     var value = items[key];
-                    //     alert(value);
-                    // // do something with "key" and "value" variables
-                    // }
-
-
-                    // let item = response.data;
-                    // self.location = item['location'];
-                    // self.itemTitle = item['title'];
-                    // self.tags = item['tags'];
-                    // self.owner_uid = item['owner_uid'];
-                    // self.photo_url = item['photo_url'];
-                    // self.description = item['description'];
-                    // self.itemImage = item['photo_url'];
                 })
                 .catch(error => {
                     let errorCode = error.code;
                     let errorMessage = error.message;
-                    alert("ERROR " + errorCode + ":" + errorMessage);
+                    self.snackbar = true;
+                    self.text = "ERROR " + errorCode + ":" + errorMessage;
                 });
         }
     };

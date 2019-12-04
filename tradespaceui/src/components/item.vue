@@ -76,6 +76,20 @@
                 </v-card>
             </v-dialog>
         </div>
+        <div class="text-center ma-2">
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </div>
     </div>
 </template>
 
@@ -105,7 +119,9 @@
             profilePhoto: '',
             dialog: false,
             editMode: false,
-            notEditMode: true
+            notEditMode: true,
+            text: '',
+            snackbar: false
         }),
         methods: {
             startTrade: function () {
@@ -181,24 +197,15 @@
                         if(self.curUserID == self.owner_uid) {
                             self.editMode = true;
                         }
-                        else {
-                            //alert(self.curUserID);
-                            //alert(self.itemUserID);
-                        }
                         self.notEditMode = !(self.editMode);
                     })
                     .catch(error => {
                         let errorCode = error.code;
                         let errorMessage = error.message;
-                        alert("ERROR " + errorCode + ":" + errorMessage);
+                        self.snackbar = true;
+                        self.text = "ERROR " + errorCode + ":" + errorMessage;
                     });
             }
-
-            // .catch(error => {
-            //     let errorCode = error.code;
-            //     let errorMessage = error.message;
-            //     // alert("ERROR " + errorCode + ":" + errorMessage);
-            // });
         }
 
     };

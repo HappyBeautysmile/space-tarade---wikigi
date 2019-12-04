@@ -162,7 +162,8 @@ export default {
           .catch(error => {
               let errorCode = error.code;
               let errorMessage = error.message;
-              alert("ERROR " + errorCode + ":" + errorMessage);
+              self.snackbar = true;
+              self.text = "ERROR " + errorCode + ":" + errorMessage;
           });
     },
     uploadItem: function(auth_token, photo_url, photo_changed) {
@@ -182,24 +183,29 @@ export default {
         })
             .then(response => {
                 if (photo_changed == true) {
-                  setTimeout(function(){ alert("Successfully Updated Item: " + response['data']['title']); }, 11000);
+                  setTimeout(function(){ 
+                    self.snackbar = true;
+                    self.text = "Successfully Updated Item: " + response['data']['title'];
+                  }, 11000);
                 }
                 else {
-                  setTimeout(function(){ alert("Successfully Updated Item: " + response['data']['title']); }, 4000);
+                  setTimeout(function(){ 
+                    self.snackbar = true;
+                    self.text = "Successfully Updated Item: " + response['data']['title'];
+                  }, 4000);
                 }
                 //Get back an Item variable. Not sure if the information is needed, but it is not used.
             })
             .catch(error => {
                 let errorCode = error.code;
                 let errorMessage = error.message;
-                alert(errorCode + ":" + errorMessage);
+                self.snackbar = true;
                 self.text = "ERROR " + errorCode + ":" + errorMessage;
             });
     }
   },
 
   created() {
-    // alert('CHECK')
     let self = this;
     self.itemID = this.$route.params.itemID;
     axios.get('/items/' + self.itemID, {
@@ -209,7 +215,6 @@ export default {
         }
     })
         .then(response => {
-            // alert(response)
             let item = response.data;
             self.location = item['location'];
             self.itemTitle = item['title'];
@@ -232,7 +237,8 @@ export default {
                 .catch(error => {
                     let errorCode = error.code;
                     let errorMessage = error.message;
-                    alert("ERROR " + errorCode + ":" + errorMessage);
+                    self.snackbar = true;
+                    self.text = "ERROR " + errorCode + ":" + errorMessage;
                 });
 
             //BELOW IS GETTING CURRENT USER. IF IT IS THE SAME USER, THEN WE WILL EDIT.
@@ -241,7 +247,8 @@ export default {
         .catch(error => {
             let errorCode = error.code;
             let errorMessage = error.message;
-            alert("ERROR " + errorCode + ":" + errorMessage);
+            self.snackbar = true;
+            self.text = "ERROR " + errorCode + ":" + errorMessage;
         });
     }
 
