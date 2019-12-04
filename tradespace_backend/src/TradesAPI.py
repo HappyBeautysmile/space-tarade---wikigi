@@ -4,14 +4,21 @@ from firebase_admin import firestore
 from itertools import chain
 
 from src.ItemsAPI import get_item
+from src.UsersAPI import get_user_with_id
 
 from src.models.Item import Item
 from src.models.Trades import Trade, BarterTrade, MoneyTrade, BarterAndMoneyTrade
 
-
 trades_api = Blueprint('trades_api', __name__)
 TRADES_COLLECTION = 'trades'
 ITEMS_COLLECTION = 'items'
+
+from twilio.rest import Client
+account_sid = 'AC137dcf1bef9d14b277b01f3c93408664'
+auth_token = '285b12f07bb751bc11d459adb3bfd92b'
+account_number = '+15417270153'
+client = Client(account_sid, auth_token)
+
 
 """
 Get a single trade with the given ID. The returned object is of type of given trade.
@@ -87,6 +94,26 @@ def create_trade():
     except:
         return {'error': 'could not push new trade, try again later'}, 500
 
+    buyer_info, resp_code = get_user_with_id(g.uid)
+    seller_info, resp_code = get_user_with_id(item.owner_uid)
+
+    buyer_info = buyer_info.get_json()
+    seller_info = seller_info.get_json()
+
+    message = client.messages \
+      .create(
+              body="Hey! A fellow Tradespace user is interested in your item: " + item.title + ". Sign into Tradespace to propose a potential trade!",
+              from_=account_number,
+              to=seller_info['phone_number']
+      )
+
+    message = client.messages \
+      .create(
+          body="Hey! We notified " + seller_info['display_name'] + " that you are interested in their item: " + item.title + ". We'll notify you once they make a decision on the trade!",
+          from_=account_number,
+          to=buyer_info['phone_number']
+      )
+    
     return new_trade.to_dict(), 201
 
 @trades_api.route('/<string:trade_id>/barter', methods=['PUT'])
@@ -132,6 +159,26 @@ def make_barter_trade(trade_id):
     except:
         return {'error': 'could not update trade, try again later'}, 500
 
+    buyer_info, resp_code = get_user_with_id(new_trade_obj.buyer_id)
+    seller_info, resp_code = get_user_with_id(new_trade_obj.seller_id)
+
+    buyer_info = buyer_info.get_json()
+    seller_info = seller_info.get_json()
+
+    message = client.messages \
+      .create(
+          body="Hey! Thanks for proposing a trade with " + buyer_info['display_name'] + ". Check out the details on the 'My Trades' page on Tradespace! We have notified them about the trade, and you can further work out the trade by contacting them directly at " + buyer_info['phone_number'] + ".",
+          from_=account_number,
+          to=seller_info['phone_number']
+      )
+    
+    message = client.messages \
+      .create(
+          body="Hey! " + seller_info['display_name'] + " proposed a trade! Check out the details on the 'My Trades' page on Tradespace! You can further work out the trade by contacting them directly at " + seller_info['phone_number'] + ".",
+          from_=account_number,
+          to=buyer_info['phone_number']
+      )
+    
     return new_trade_obj.to_dict(), 200
 
 
@@ -165,6 +212,26 @@ def make_money_trade(trade_id):
         new_trade_ref.update(new_trade_obj.to_dict())
     except:
         return {'error': 'could not update trade, try again later'}, 500
+
+    buyer_info, resp_code = get_user_with_id(new_trade_obj.buyer_id)
+    seller_info, resp_code = get_user_with_id(new_trade_obj.seller_id)
+
+    buyer_info = buyer_info.get_json()
+    seller_info = seller_info.get_json()
+  
+    message = client.messages \
+      .create(
+          body="Hey! Thanks for proposing a trade with " + buyer_info['display_name'] + ". Check out the details on the 'My Trades' page on Tradespace! We have notified them about the trade, and you can further work out the trade by contacting them directly at " + buyer_info['phone_number'] + ".",
+          from_=account_number,
+          to=seller_info['phone_number']
+      )
+    
+    message = client.messages \
+      .create(
+          body="Hey! " + seller_info['display_name'] + " proposed a trade! Check out the details on the 'My Trades' page on Tradespace! You can further work out the trade by contacting them directly at " + seller_info['phone_number'] + ".",
+          from_=account_number,
+          to=buyer_info['phone_number']
+      )
 
     return new_trade_obj.to_dict(), 200
 
@@ -213,6 +280,26 @@ def make_barter_and_money_trade(trade_id):
     except:
         return {'error': 'could not update trade, try again later'}, 500
 
+    buyer_info, resp_code = get_user_with_id(new_trade_obj.buyer_id)
+    seller_info, resp_code = get_user_with_id(new_trade_obj.seller_id)
+
+    buyer_info = buyer_info.get_json()
+    seller_info = seller_info.get_json()
+
+    message = client.messages \
+      .create(
+          body="Hey! Thanks for proposing a trade with " + buyer_info['display_name'] + ". Check out the details on the 'My Trades' page on Tradespace! We have notified them about the trade, and you can further work out the trade by contacting them directly at " + buyer_info['phone_number'] + ".",
+          from_=account_number,
+          to=seller_info['phone_number']
+      )
+    
+    message = client.messages \
+      .create(
+          body="Hey! " + seller_info['display_name'] + " proposed a trade! Check out the details on the 'My Trades' page on Tradespace! You can further work out the trade by contacting them directly at " + seller_info['phone_number'] + ".",
+          from_=account_number,
+          to=buyer_info['phone_number']
+      )
+    
     return new_trade_obj.to_dict(), 200
 
 @trades_api.route('/<string:trade_id>/complete', methods=['POST'])
@@ -242,6 +329,26 @@ def complete_trade(trade_id):
     except:
         return {'error': 'could not update trade status, try again later'}, 500
 
+    buyer_info, resp_code = get_user_with_id(trade_obj.buyer_id)
+    seller_info, resp_code = get_user_with_id(trade_obj.seller_id)
+
+    buyer_info = buyer_info.get_json()
+    seller_info = seller_info.get_json()
+
+    message = client.messages \
+      .create(
+          body="Hey! Your trade with " + buyer_info['display_name'] + " has been marked as complete. Thanks for choosing Tradespace to make your trade!",
+          from_=account_number,
+          to=seller_info['phone_number']
+      )
+    
+    message = client.messages \
+      .create(
+          body="Hey! Your trade with " + seller_info['display_name'] + " has been marked as complete. Thanks for choosing Tradespace to make your trade!",
+          from_=account_number,
+          to=buyer_info['phone_number']
+      )
+    
     return trade_obj.to_dict(), 200
 
 @trades_api.route('/<string:trade_id>/remove', methods=['POST'])
@@ -271,6 +378,26 @@ def remove_trade(trade_id):
     except:
         return {'error': 'could not update trade status, try again later'}, 500
 
+    buyer_info, resp_code = get_user_with_id(trade_obj.buyer_id)
+    seller_info, resp_code = get_user_with_id(trade_obj.seller_id)
+
+    buyer_info = buyer_info.get_json()
+    seller_info = seller_info.get_json()
+
+    message = client.messages \
+      .create(
+          body="Hey! Your trade with " + buyer_info['display_name'] + " has been cancelled.",
+          from_=account_number,
+          to=seller_info['phone_number']
+      )
+    
+    message = client.messages \
+      .create(
+          body="Hey! Your trade with " + seller_info['display_name'] + " has been cancelled.",
+          from_=account_number,
+          to=buyer_info['phone_number']
+      )
+    
     return trade_obj.to_dict(), 200
 
 @trades_api.route('/', methods=['GET'])

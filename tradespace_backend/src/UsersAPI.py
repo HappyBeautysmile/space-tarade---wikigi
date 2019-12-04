@@ -6,6 +6,12 @@ from firebase_admin import auth as firebase_auth
 from firebase_admin import _auth_utils as firebase_auth_utils
 users_api = Blueprint('users_api', __name__)
 
+from twilio.rest import Client
+account_sid = 'AC137dcf1bef9d14b277b01f3c93408664'
+auth_token = '285b12f07bb751bc11d459adb3bfd92b'
+account_number = '+15417270153'
+client = Client(account_sid, auth_token)
+
 @users_api.route('/', methods=['GET'])
 @auth.login_required
 def get_user():
@@ -59,6 +65,14 @@ def create_user():
     photo_url = data['photo_url']
     user = firebase_auth.create_user(email=email, password=password, display_name=display_name, phone_number=phone_number, photo_url=photo_url)
     user_data = jsonify(user_id=user.uid)
+    
+    message = client.messages \
+      .create(
+              body="Thanks for signing up with Tradespace! In the future, you will receive SMS notifications regarding your trades.",
+              from_=account_number,
+              to=phone_number
+      )
+
     return user_data, 201
   except firebase_auth_utils.EmailAlreadyExistsError:
     return {'error': 'email already exists'}, 400

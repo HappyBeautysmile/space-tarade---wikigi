@@ -38,13 +38,16 @@ py==1.8.0
 pyasn1==0.4.7
 pyasn1-modules==0.2.7
 pycparser==2.19
+PyJWT==1.7.1
 pyOpenSSL==19.1.0
 pyparsing==2.4.5
 pytest==5.2.2
+python-Levenshtein==0.12.0
 pytz==2019.3
 requests==2.22.0
 rsa==4.0
 six==1.13.0
+twilio==6.33.1
 uritemplate==3.0.0
 urllib3==1.25.7
 wcwidth==0.1.7
