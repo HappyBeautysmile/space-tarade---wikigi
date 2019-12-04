@@ -32,7 +32,7 @@ Vue.use(BootstrapVue);
 
 let app = '';
 // Vue.config.productionTip = false;
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://ec2-52-35-79-115.us-west-2.compute.amazonaws.com';
 
 
 firebase.auth().onAuthStateChanged(()=>{

@@ -67,3 +67,7 @@ tradespace_backend/instance/*
 !tradespace_backend/instance/readme.md
 __pycache__/
 
+# MORE FRONTEND IGNORES
+tradespaceui/.firebase
+tradespaceui/.idea
+tradespaceui/dist
