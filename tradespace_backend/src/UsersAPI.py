@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, g
 from src.TokenAuthentication import auth
+from instance.TwilioKeys import TWILIO_AUTH_TOKEN, TWILIO_SID, TWILIO_NUMBER
 import firebase_admin
 import sys
 from firebase_admin import auth as firebase_auth
@@ -7,10 +8,7 @@ from firebase_admin import _auth_utils as firebase_auth_utils
 users_api = Blueprint('users_api', __name__)
 
 from twilio.rest import Client
-account_sid = 'AC137dcf1bef9d14b277b01f3c93408664'
-auth_token = '285b12f07bb751bc11d459adb3bfd92b'
-account_number = '+15417270153'
-client = Client(account_sid, auth_token)
+client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
 
 @users_api.route('/', methods=['GET'])
 @auth.login_required
@@ -65,11 +63,11 @@ def create_user():
     photo_url = data['photo_url']
     user = firebase_auth.create_user(email=email, password=password, display_name=display_name, phone_number=phone_number, photo_url=photo_url)
     user_data = jsonify(user_id=user.uid)
-    
+
     message = client.messages \
       .create(
               body="Thanks for signing up with Tradespace! In the future, you will receive SMS notifications regarding your trades.",
-              from_=account_number,
+              from_=TWILIO_NUMBER,
               to=phone_number
       )
 
@@ -80,6 +78,7 @@ def create_user():
     return {'error': 'phone number already exists'}, 400
   except firebase_auth_utils.UnexpectedResponseError:
     return {'error': 'unexpected response'}, 400
-  except:
+  except Exception as inst:
     print("Unexpected error:", sys.exc_info()[0])
+    print(inst)
     return {'error': 'request error'}, 400

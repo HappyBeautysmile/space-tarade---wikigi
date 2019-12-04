@@ -1,5 +1,6 @@
 from flask import Blueprint, request, g
 from src.TokenAuthentication import auth
+from instance.TwilioKeys import TWILIO_AUTH_TOKEN, TWILIO_SID, TWILIO_NUMBER
 from firebase_admin import firestore
 from itertools import chain
 
@@ -14,10 +15,7 @@ TRADES_COLLECTION = 'trades'
 ITEMS_COLLECTION = 'items'
 
 from twilio.rest import Client
-account_sid = 'AC137dcf1bef9d14b277b01f3c93408664'
-auth_token = '285b12f07bb751bc11d459adb3bfd92b'
-account_number = '+15417270153'
-client = Client(account_sid, auth_token)
+client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
 
 
 """
@@ -103,17 +101,17 @@ def create_trade():
     message = client.messages \
       .create(
               body="Hey! A fellow Tradespace user is interested in your item: " + item.title + ". Sign into Tradespace to propose a potential trade!",
-              from_=account_number,
+              from_=TWILIO_NUMBER,
               to=seller_info['phone_number']
       )
 
     message = client.messages \
       .create(
           body="Hey! We notified " + seller_info['display_name'] + " that you are interested in their item: " + item.title + ". We'll notify you once they make a decision on the trade!",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=buyer_info['phone_number']
       )
-    
+
     return new_trade.to_dict(), 201
 
 @trades_api.route('/<string:trade_id>/barter', methods=['PUT'])
@@ -168,17 +166,17 @@ def make_barter_trade(trade_id):
     message = client.messages \
       .create(
           body="Hey! Thanks for proposing a trade with " + buyer_info['display_name'] + ". Check out the details on the 'My Trades' page on Tradespace! We have notified them about the trade, and you can further work out the trade by contacting them directly at " + buyer_info['phone_number'] + ".",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=seller_info['phone_number']
       )
-    
+
     message = client.messages \
       .create(
           body="Hey! " + seller_info['display_name'] + " proposed a trade! Check out the details on the 'My Trades' page on Tradespace! You can further work out the trade by contacting them directly at " + seller_info['phone_number'] + ".",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=buyer_info['phone_number']
       )
-    
+
     return new_trade_obj.to_dict(), 200
 
 
@@ -218,18 +216,18 @@ def make_money_trade(trade_id):
 
     buyer_info = buyer_info.get_json()
     seller_info = seller_info.get_json()
-  
+
     message = client.messages \
       .create(
           body="Hey! Thanks for proposing a trade with " + buyer_info['display_name'] + ". Check out the details on the 'My Trades' page on Tradespace! We have notified them about the trade, and you can further work out the trade by contacting them directly at " + buyer_info['phone_number'] + ".",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=seller_info['phone_number']
       )
-    
+
     message = client.messages \
       .create(
           body="Hey! " + seller_info['display_name'] + " proposed a trade! Check out the details on the 'My Trades' page on Tradespace! You can further work out the trade by contacting them directly at " + seller_info['phone_number'] + ".",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=buyer_info['phone_number']
       )
 
@@ -289,17 +287,17 @@ def make_barter_and_money_trade(trade_id):
     message = client.messages \
       .create(
           body="Hey! Thanks for proposing a trade with " + buyer_info['display_name'] + ". Check out the details on the 'My Trades' page on Tradespace! We have notified them about the trade, and you can further work out the trade by contacting them directly at " + buyer_info['phone_number'] + ".",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=seller_info['phone_number']
       )
-    
+
     message = client.messages \
       .create(
           body="Hey! " + seller_info['display_name'] + " proposed a trade! Check out the details on the 'My Trades' page on Tradespace! You can further work out the trade by contacting them directly at " + seller_info['phone_number'] + ".",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=buyer_info['phone_number']
       )
-    
+
     return new_trade_obj.to_dict(), 200
 
 @trades_api.route('/<string:trade_id>/complete', methods=['POST'])
@@ -338,17 +336,17 @@ def complete_trade(trade_id):
     message = client.messages \
       .create(
           body="Hey! Your trade with " + buyer_info['display_name'] + " has been marked as complete. Thanks for choosing Tradespace to make your trade!",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=seller_info['phone_number']
       )
-    
+
     message = client.messages \
       .create(
           body="Hey! Your trade with " + seller_info['display_name'] + " has been marked as complete. Thanks for choosing Tradespace to make your trade!",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=buyer_info['phone_number']
       )
-    
+
     return trade_obj.to_dict(), 200
 
 @trades_api.route('/<string:trade_id>/remove', methods=['POST'])
@@ -387,17 +385,17 @@ def remove_trade(trade_id):
     message = client.messages \
       .create(
           body="Hey! Your trade with " + buyer_info['display_name'] + " has been cancelled.",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=seller_info['phone_number']
       )
-    
+
     message = client.messages \
       .create(
           body="Hey! Your trade with " + seller_info['display_name'] + " has been cancelled.",
-          from_=account_number,
+          from_=TWILIO_NUMBER,
           to=buyer_info['phone_number']
       )
-    
+
     return trade_obj.to_dict(), 200
 
 @trades_api.route('/', methods=['GET'])
