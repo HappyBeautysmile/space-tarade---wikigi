@@ -138,6 +138,7 @@
             this.itemLocation = this.item['location'];
             this.itemID = this.item['item_id'];
             this.owner_uid = this.item['owner_uid'];
+            this.profilePhoto = "gs://tradespace-22f37.appspot.com/" + this.owner_uid + "/profile.jpg";
             let self = this;
             if (this.owner_uid !== null || this.owner_uid !== '') {
                 axios.get('/users/' + self.owner_uid, {
@@ -149,24 +150,22 @@
                     .then(response => {
                         let user = response.data;
                         self.name = user['display_name'];
-                        self.profilePhoto = user['photo_url'];
-
-                        if (self.profilePhoto) {
-                            self.photo_path = self.profilePhoto.split('appspot.com/')[1];
-                            var storage = firebase.storage();
-                            var storageRef = storage.ref();
-                            storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
-                                self.profile_photo = url;
-                            });
-                        }
                     });
+
+                var storage = firebase.storage();
+                var storageRef = storage.ref();
 
                 if (self.itemPhoto) {
                     self.photo_path = self.itemPhoto.split('appspot.com/')[1];
-                    var storage = firebase.storage();
-                    var storageRef = storage.ref();
                     storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
                         self.item_photo = url;
+                    });
+                }
+
+                if (self.profilePhoto) {
+                    self.photo_path = self.profilePhoto.split('appspot.com/')[1];
+                    storageRef.child(self.photo_path).getDownloadURL().then(function(url) {
+                        self.profile_photo = url;
                     });
                 }
 
