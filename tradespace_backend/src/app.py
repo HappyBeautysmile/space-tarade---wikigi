@@ -29,7 +29,7 @@ def do_something_whenever_a_request_has_been_handled(response):
 
 @app.route("/")
 def hello():
-  return "Hello world!"
+  return "TradeSpace API is up and running!", 200
 
 
 @app.route("/authreq")
