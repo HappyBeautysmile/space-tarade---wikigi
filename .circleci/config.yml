@@ -79,7 +79,7 @@ jobs:
             name: Backend Deployment over SSH
             command: |
                 ssh-keyscan -H api.tradespace.store >> ~/.ssh/known_hosts
-                ssh ec2-user@api.tradespace.store ~/TradeScape/tradespace_backend/deploy.sh
+                ssh ec2-user@api.tradespace.store "./TradeSpace/tradespace_backend/deploy.sh"
 
         - run:
             name: Frontend Deployment using Firebase
