@@ -31,6 +31,10 @@ def do_something_whenever_a_request_has_been_handled(response):
 def hello():
   return "TradeSpace API is up and running!", 200
 
+@app.route("/status")
+def status():
+  return "Ok!", 200
+
 
 @app.route("/authreq")
 @auth.login_required
