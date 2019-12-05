@@ -5,8 +5,8 @@ def login():
   response = requests.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDXj-1A4-KiCMtxbqgkEh6uJnwdN2Bb-40',
     data={
-      'email':'test1234@gmail.com',
-      'password': 'test1234',
+      'email':'test1@test.com',
+      'password': 'test@12345',
       'returnSecureToken': True
     })
   json_response = response.json()
@@ -19,18 +19,15 @@ def test_success_without_uid(client):
     '/users/',
     headers={'Authorization': 'token {}'.format(idToken)})
   json_data = rv.get_json()
-  assert json_data['display_name'] == 'test1234'
-  assert json_data['email'] == 'test1234@gmail.com'
+  assert json_data['display_name'] == 'Test One'
+  assert json_data['email'] == 'test1@test.com'
   assert json_data['phone_number'] == '+11111111111'
-  assert json_data['photo_url'] == 'gs://tradespace-22f37.appspot.com/user1/profile.jpg'
+  assert json_data['photo_url'] == 'gs://tradespace-22f37.appspot.com/FsRLKnZCAQUne6fw7VbxkOLDHRw1/profile.jpg'
 
 def test_success_with_uid(client):
   idToken = login()
   rv = client.get(
-    '/users/c1sU9A9OEEfrsxrT6Qp9WnbPm4p2',
+    '/users/EPvxkRaIV8YnblrYaU0GNr61Krn2',
     headers={'Authorization': 'token {}'.format(idToken)})
   json_data = rv.get_json()
-  assert json_data['display_name'] == 'test12345'
-  assert json_data['email'] == 'test12345@gmail.com'
-  assert json_data['phone_number'] == '+12222222228'
-  assert json_data['photo_url'] == 'gs://tradespace-22f37.appspot.com/user2/profile.jpg'
+  assert json_data['email'] == 'test2@test.com'

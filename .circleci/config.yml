@@ -50,9 +50,9 @@ jobs:
           command: |
             cd tradespace_backend
             . venv/bin/activate
-            chmod +x gen_firebase_keys_from_envvar.sh
+            chmod +x gen_firebase_keys_from_envvar.sh ./gen_twilio_keys_from_envvar.sh
             ./gen_firebase_keys_from_envvar.sh > instance/tradespace_firebase_admin_key.json
-            echo instance/tradespace_firebase_admin_key.json
+            ./gen_twilio_keys_from_envvar.sh > instance/TwilioKeys.py
             cd test
             pytest
 
