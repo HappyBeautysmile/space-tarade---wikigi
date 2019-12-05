@@ -53,7 +53,6 @@ jobs:
             chmod +x gen_firebase_keys_from_envvar.sh ./gen_twilio_keys_from_envvar.sh
             ./gen_firebase_keys_from_envvar.sh > instance/tradespace_firebase_admin_key.json
             ./gen_twilio_keys_from_envvar.sh > instance/TwilioKeys.py
-            cd test
             pytest
 
       - store_artifacts:
