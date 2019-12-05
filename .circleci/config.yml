@@ -78,7 +78,15 @@ jobs:
         - run:
             name: Backend Deployment over SSH
             command: |
+                ssh-keyscan -H api.tradespace.store >> ~/.ssh/known_hosts
                 ssh ec2-user@api.tradespace.store ~/TradeScape/tradespace_backend/deploy.sh
+
+        - run:
+            name: Frontend Deployment using Firebase
+            command: |
+                cd tradespaceui/
+                npm run build
+                firebase deploy
 
 
 workflows:
@@ -94,4 +102,3 @@ workflows:
           filters:
             branches:
                 only: master
-                
