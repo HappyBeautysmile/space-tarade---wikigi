@@ -60,8 +60,8 @@ jobs:
           destination: test-reports
   deploy:
     docker:
-        # specify the version you desire here
-        - image: circleci/python:3.6.1-node
+        # specify the version you desire her
+        - image: circleci/python:3.6-node-browsers
 
     working_directory: ~/repo
 
