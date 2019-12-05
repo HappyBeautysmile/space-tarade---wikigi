@@ -12,7 +12,7 @@ context("Home", () => {
     cy.get("div.v-card__actions > button:nth-child(3)").click();
   });
 
-  it("Search ", () => {
+  xit("Search ", () => {
     cy.get("header > div > a:nth-child(3) > button").click();
 
     cy.get("#cover > form > div > div > input[type=text]").type("plaid");
@@ -28,7 +28,7 @@ context("Home", () => {
     cy.get("div > div.v-card__actions > button:nth-child(3)").click();
   });
 
-  it("Check if items component exists ", () => {
+  xit("Check if items component exists ", () => {
     cy.get("header > div > a:nth-child(5) > button").click();
 
     cy.get("div > a:nth-child(2) > button").click();
@@ -63,11 +63,13 @@ context("Home", () => {
 
     cy.get("div.v-card__actions > button:nth-child(2) > span")
       .wait(1000)
-      .click();
+      .click()
+      .wait(1000);
 
     cy.get("#textarea")
       .wait(1000)
       .clear()
+      .wait(1000)
       .type("foobar");
 
     cy.get("div:nth-child(6) > button").click();
@@ -83,16 +85,18 @@ context("Home", () => {
     cy.get(
       "#app > div.v-dialog__content.v-dialog__content--active > div > div > div.v-card__actions > button:nth-child(2)"
     )
-      .wait(3000)
-      .click();
+      .wait(1000)
+      .click()
+      .wait(1000);
 
     cy.get("#textarea")
-      .wait(1000)
+      .wait(3000)
       .clear()
+      .wait(1000)
       .type("Tony Hawk used to own it.");
   });
 
-  it("Trade Transaction ", () => {
+  xit("Trade Transaction ", () => {
     cy.get("header > div > a:nth-child(3) > button").click();
 
     cy.get("#cover > form > div > div > input[type=text]").type("tv");
@@ -118,5 +122,33 @@ context("Home", () => {
     cy.get(
       "#app > div > main > div > div > div:nth-child(4) > div:nth-child(1) > div > div"
     ).contains("Akaash");
+  });
+
+  xit("Edit Profile ", () => {
+    cy.get(
+      ".v-toolbar__content > a:nth-child(5) > button:nth-child(1)"
+    ).click();
+
+    cy.get("a.noHyperlink:nth-child(4) > button:nth-child(1)").click();
+
+    cy.get(".container > div:nth-child(2) > input")
+      .wait(1000)
+      .clear()
+      .wait(1000)
+      .type("x");
+
+    cy.get(".primary").click();
+
+    cy.get("div.v-list-item__subtitle:nth-child(2)").contains("x");
+
+    cy.get("a.noHyperlink:nth-child(4) > button:nth-child(1)").click();
+
+    cy.get(".container > div:nth-child(2) > input")
+      .wait(1000)
+      .clear()
+      .wait(1000)
+      .type("Dawei Huang");
+
+    cy.get(".primary").click();
   });
 });
