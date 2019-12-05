@@ -10,8 +10,8 @@ sudo ./.env/bin/gunicorn \
     --bind 0.0.0.0:443 /
     --certfile /etc/letsencrypt/live/tradespace.store/fullchain.pem /
     --keyfile /etc/letsencrypt/live/tradespace.store/privkey.pem /
-    --access-logfile instance/gunicorn-access.log
-    --error-logfile instance/gunicorn-error.log
+    --access-logfile instance/gunicorn-access.log /
+    --error-logfile instance/gunicorn-error.log /
     wsgi /
     --daemon &&
 printf "deploy successful!\n"
