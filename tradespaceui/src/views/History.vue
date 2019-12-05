@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid style="padding: 80px 40px 0 40px">
+    <b-container fluid style="padding: 5% 0% 0 0%">
 
         <h1 class="mytradestitle">
             <router-link to="/account">
