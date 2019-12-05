@@ -85,6 +85,7 @@ jobs:
             name: Frontend Deployment using Firebase
             command: |
                 cd tradespaceui/
+                npm install
                 npm run build
                 firebase deploy
 
