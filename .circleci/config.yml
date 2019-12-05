@@ -61,7 +61,7 @@ jobs:
   deploy:
     docker:
         # specify the version you desire here
-        - image: circleci/python:3.6.1-node-browsers
+        - image: circleci/python:3.6.1-node
 
     working_directory: ~/repo
 
