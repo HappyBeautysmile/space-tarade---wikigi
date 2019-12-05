@@ -50,18 +50,56 @@ jobs:
           command: |
             cd tradespace_backend
             . venv/bin/activate
-            chmod +x gen_firebase_keys_from_envvar.sh
+            chmod +x gen_firebase_keys_from_envvar.sh ./gen_twilio_keys_from_envvar.sh
             ./gen_firebase_keys_from_envvar.sh > instance/tradespace_firebase_admin_key.json
-            echo instance/tradespace_firebase_admin_key.json
-            cd test
+            ./gen_twilio_keys_from_envvar.sh > instance/TwilioKeys.py
             pytest
 
       - store_artifacts:
           path: test-reports
           destination: test-reports
+  deploy:
+    docker:
+        # specify the version you desire her
+        - image: circleci/python:3.6-node-browsers
+
+    working_directory: ~/repo
+
+    steps:
+        - checkout
+        - add_ssh_keys:
+            fingerprints:
+              - "81:6e:bb:4c:4f:4e:33:ae:a6:d2:93:73:c7:5d:8a:3c"
+        - run:
+            name: Install firebase-tools
+            command: |
+                curl -sL firebase.tools | bash
+
+        - run:
+            name: Backend Deployment over SSH
+            command: |
+                ssh-keyscan -H api.tradespace.store >> ~/.ssh/known_hosts
+                ssh ec2-user@api.tradespace.store "./TradeSpace/tradespace_backend/deploy.sh"
+
+        - run:
+            name: Frontend Deployment using Firebase
+            command: |
+                cd tradespaceui/
+                npm install
+                npm run build
+                firebase deploy
+
+
 workflows:
   version: 2
   my-workflow:
     jobs:
       - build:
           context: backend_secrets
+      - deploy:
+          context: backend_secrets
+          requires:
+            - build
+          filters:
+            branches:
+                only: master

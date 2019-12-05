@@ -64,12 +64,15 @@ def create_user():
     user = firebase_auth.create_user(email=email, password=password, display_name=display_name, phone_number=phone_number, photo_url=photo_url)
     user_data = jsonify(user_id=user.uid)
 
-    message = client.messages \
-      .create(
-              body="Thanks for signing up with Tradespace! In the future, you will receive SMS notifications regarding your trades.",
-              from_=TWILIO_NUMBER,
-              to=phone_number
-      )
+    try:
+        message = client.messages \
+        .create(
+                body="Thanks for signing up with Tradespace! In the future, you will receive SMS notifications regarding your trades.",
+                from_=TWILIO_NUMBER,
+                to=phone_number
+        )
+    except:
+        pass
 
     return user_data, 201
   except firebase_auth_utils.EmailAlreadyExistsError:

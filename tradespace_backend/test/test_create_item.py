@@ -6,7 +6,7 @@ def login():
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDXj-1A4-KiCMtxbqgkEh6uJnwdN2Bb-40',
     data={
       'email':'test1@test.com',
-      'password': 'Password@123',
+      'password': 'test@12345',
       'returnSecureToken': True
     })
   json_response = response.json()
