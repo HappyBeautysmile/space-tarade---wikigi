@@ -63,8 +63,10 @@
                   "
             >
               <b-img v-if="transaction.your_item == null && transaction.your_price == null" contain color="grey" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/google/80/black-question-mark-ornament_2753.png" class="imageCard"></b-img>
-              <b-img v-else-if="transaction.your_item != null" contain color="grey" :src="transaction.your_item.photo_url" class="imageCard"></b-img>
-              <b-img v-else-if="transaction.your_price != null" contain color="grey" src="http://clipart-library.com/data_images/539708.png" class="imageCard"></b-img>
+              <div v-else> 
+                <b-img v-if="transaction.your_item != null" contain color="grey" :src="transaction.your_item.photo_url" class="imageCard"></b-img>
+                <b-img v-if="transaction.your_price != null" contain color="grey" src="http://clipart-library.com/data_images/539708.png" class="imageCard"></b-img>
+              </div>
 
               <b-card-body>
                 <v-list-item-title style="text-align: center">
@@ -88,9 +90,12 @@
                   align-items: center;
                   "
             >
+
               <b-img v-if="transaction.their_item == null && transaction.their_price == null" contain color="grey" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/google/80/black-question-mark-ornament_2753.png" class="imageCard"></b-img>
-              <b-img v-else-if="transaction.their_item != null" contain color="grey" :src="transaction.their_item.photo_url" class="imageCard"></b-img>
-              <b-img v-else-if="transaction.their_price != null" contain color="grey" src="http://clipart-library.com/data_images/539708.png" class="imageCard"></b-img>
+              <div v-else> 
+                <b-img v-if="transaction.their_item != null" contain color="grey" :src="transaction.their_item.photo_url" class="imageCard"></b-img>
+                <b-img v-if="transaction.their_price != null" contain color="grey" src="http://clipart-library.com/data_images/539708.png" class="imageCard"></b-img>
+              </div>
 
               <b-card-body>
                 <v-list-item-title style="text-align: center">
