@@ -58,9 +58,40 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+  deploy:
+    docker:
+        # specify the version you desire here
+        - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+        - checkout
+        - add_ssh_keys:
+            fingerprints:
+              - "81:6e:bb:4c:4f:4e:33:ae:a6:d2:93:73:c7:5d:8a:3c"
+        - run:
+            name: Install firebase-tools
+            command: |
+                curl -sL firebase.tools | bash
+
+        - run:
+            name: Backend Deployment over SSH
+            command: |
+                ssh ec2-user@api.tradespace.store ~/TradeScape/tradespace_backend/deploy.sh
+
+
 workflows:
   version: 2
   my-workflow:
     jobs:
       - build:
           context: backend_secrets
+      - deploy:
+          context: backend_secrets
+          requires:
+            - build
+          filters:
+            branches:
+                only: master
+                
