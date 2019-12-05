@@ -1,12 +1,8 @@
 <template>
-    <b-container fluid style="padding: 5% 0% 0 0%">
+    <b-container fluid style="padding: 80px 40px 0 40px">
 
-        <h1 class="mytradestitle">
-            <router-link to="/account">
-                <div
-                    style="position: absolute; padding-left:5%; color:black; font-size:large; margin-top:1%"
-                >&lt; BACK</div>
-            </router-link>MY ITEMS
+        <h1 class="mytradestitle" style="text-align:center">
+        MY ITEMS
         </h1>
 
         <b-row style="padding: 20px 40px 0 40px" v-if="safe">
@@ -46,6 +42,12 @@
                 </router-link> -->
             </li>
         </b-row>
+
+        <div style="padding: 20px">
+            <router-link to="/account">
+                <v-btn large color="primary"> Back to Account</v-btn>
+            </router-link>
+        </div>
 
         <div class="text-center ma-2">
             <v-snackbar
