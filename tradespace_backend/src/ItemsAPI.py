@@ -23,11 +23,14 @@ def create_item():
   item = Item(title=title, location=location, description=description, tags=tags, photo_url=photo_url, owner_uid=owner_uid)
   db = firestore.client()
   try:
-    db.collection(ITEMS_COLLECTION).add(item.to_dict())
+    new_item_ref = db.collection(ITEMS_COLLECTION).document()
+    new_item_ref.set(item.to_dict())
   except:
     return {'error': 'something went wrong, please try again later'}, 500
 
-  return item.to_dict(), 201
+  new_item = item.to_dict()
+  new_item['item_id'] = new_item_ref.id
+  return new_item, 201
 
 @items_api.route('/<string:item_id>', methods=['GET'])
 @auth.login_required
