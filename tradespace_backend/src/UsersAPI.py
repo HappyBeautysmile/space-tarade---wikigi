@@ -85,3 +85,11 @@ def create_user():
     print("Unexpected error:", sys.exc_info()[0])
     print(inst)
     return {'error': 'request error'}, 400
+
+@users_api.route('/<string:user_id>', methods=['DELETE'])
+def delete_user():
+  try:
+    firebase_auth.delete_user(user_id)
+    return 200
+  except firebase_auth_utils.UserNotFoundError:
+    return {'error': 'user id not found'}, 400
