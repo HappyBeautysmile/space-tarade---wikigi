@@ -3,6 +3,11 @@
 ## Website is live!
 Go to https://tradespace.store and you can play with  our live production application!
 
+## Demo Video
+Watch the demo here: https://www.youtube.com/watch?v=_KMOYcC-pR8.
+
+## Wiki
+Make sure to check out our Github Wiki for more information (eg: testing, object models)!
 
 ## Local Deployment Instructions
 - 'tradespace_backend' contains code for backend. Instructions of how to run are included in README.md of tradespace_backend.
