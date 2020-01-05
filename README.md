@@ -4,9 +4,6 @@
 Go to https://tradespace.store and you can play with  our live production application!
 Our api is hosted at: https://api.tradespace.store/ - most routes are blocked by authentication protection though! :-)
 
-## Demo Video
-Watch the demo here: https://www.youtube.com/watch?v=_KMOYcC-pR8.
-
 ## Wiki
 Make sure to check out our Github Wiki for more information (eg: testing, object models)!
 
